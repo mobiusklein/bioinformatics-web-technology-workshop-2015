@@ -532,7 +532,15 @@ Here, traits are passed on by the prototype.
 
 
 ### JavaScript Standard Library Resources
-[The Mozilla Developers Network Javascript Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
-[W3C Schools JavaScript Reference](http://www.w3schools.com/js/default.asp)
+-[The Mozilla Developers Network Javascript Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+-[W3C Schools JavaScript Reference](http://www.w3schools.com/js/default.asp)
 
 If you want a function but don't know if it exists, check one of these first.
+
+
+### Now you try it
+Try one of the following:
+- Implement a Fasta File Format Parser (We'll see one or two implementations of these later)
+- Define a **dot product** function for `Arrays`
+- Add a `translate` method to `RNASequence`
+- Make something up!
