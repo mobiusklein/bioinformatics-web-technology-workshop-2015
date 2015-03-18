@@ -1,7 +1,7 @@
 hljs.configure({useBR: false})
 hljs.initHighlightingOnLoad();
 $(function(){
-    $(document).on("keypress", function(evt){
+    $(window).on("keypress", function(evt){
         if(evt.charCode == 13){
             runDemo()
         }
@@ -10,7 +10,7 @@ $(function(){
 })
 
 function registerRunDemo(){
-    $(document).on("keypress", function(evt){
+    $(window).on("keypress", function(evt){
         if(evt.charCode == 13){
             runDemo()
         }
