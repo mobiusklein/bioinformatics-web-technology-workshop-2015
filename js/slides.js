@@ -9,6 +9,15 @@ $(function(){
     $('title').text("Web Technology Workshop Series")
 })
 
+function registerRunDemo(){
+    $(document).on("keypress", function(evt){
+        if(evt.charCode == 13){
+            runDemo()
+        }
+    })
+}
+
+
 function ConsoleAPIStub(){
     this.buffer = "";
     this.console = console
