@@ -1,0 +1,151 @@
+<!DOCTYPE html5>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>bioinformatics-web-technology-workshop-2015</title>
+    <script src='https://code.jquery.com/jquery-2.1.3.min.js'></script>
+    <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/languages/javascript.min.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/monokai_sublime.min.css">
+    <link rel="stylesheet" type="text/css" href="https://bootswatch.com/simplex/bootstrap.min.css">
+</head>
+<body class='container'>
+<header>
+    <h1>An introduction to JavaScript and other Web Technology for Bioinformatics</h1>
+    <em>Workshop Series</em>
+</header>
+<div class='row'>
+    <div class='col-md-4'>
+        <h3>Lecture Links</h3>
+        <a href="/lecture-1-language/slides.html">Lecture 1 - A JavaScript Primer</a> (<a href="/lecture-1-language/slides.md">src</a>)
+
+    </div>
+    <div class='col-md-8'>
+        <h3>Why is this useful?</h3>
+        <div>
+            <h4>Web Technology</h4>
+            <p>
+                Web technology is a core component of modern software. Programs communicate over networks, and services render results in web browsers for a wide variety of domains, including Bioinformatics. How many professors and laboratories have web sites serving their applications and databases? How many repositories do we as both data consumers and producers interact with as central parts of our daily work? How many people use <a href="http://www.ncbi.nlm.nih.gov/gquery/">Entrez</a>, <a href="http://www.ebi.ac.uk/services">EBI</a>, <a href="http://www.uniprot.org/">UniProt</a>, <a href="http://www.genome.jp/kegg/">KEGG</a>, <a href="http://pfam.xfam.org/">PFAM</a>, and other bioinformatics databases as a web service?
+            </p>
+            <h4>JavaScript</h4>
+            <p>
+                Within the last ten years, JavaScript has become a powerful and popular fully featured programming language, in addition to being the only programming language available for general consumption online. It defines logic for both automating and interacting with a webpage. With these, we can build accessible representations of data for consumption by both technical and non-technical users. With HTML5 Graphics standards, web technology has become a major competitor in data visualization.
+            </p>
+            <p>
+                JavaScript is an asynchronous, event driven language, supporting both object-oriented, imperative programming as well as functional programming. It is an active domain of programming language research, with multiple implementations, such as V8 (WebKit and Node.js), SpiderMonkey (Firefox), and Chakra (Internet Explorer). Given its monopoly on the web, it's valuable to be familiar with it. Given some of its design quirks, idioms and popular libraries are difficult for beginners to grasp, it is useful to have a guide through the language. 
+            </p>
+        </div>
+        <h3>Topics</h3>
+        <small>Subject to Temporal Drift</small>
+        <ul>
+            <li><h4>JavaScript for general computing</h4></li>
+            <ul>
+                <li><h5>What kind of language is JavaScript?</h5></li>
+                <ul>
+                    <li><h6>The difference between the client and the server</h6></li>
+                </ul>
+                <li><h5>What kind of paradigms does it support?</h5></li>
+                <ul>
+                    <li><h6>Imperative</h6></li>
+                    <ul>
+                        <li><small>Scripting</small></li>
+                        <li><small>Prototypal Object Oriented</small></li>
+                    </ul>
+                    <li><h6>Functional</h6></li>
+                    <ul>
+                        <li><small>Functions are First Class Citizens</small></li>
+                        <li><small>Callback Chains</small></li>
+                    </ul>
+                </ul>
+                <li><h5>Basic building blocks</h5></li>
+                <ul>
+                    <li><h6>Numerics</h6></li>
+                    <li><h6>Strings</h6></li>
+                    <li><h6>Arrays, Objects, and JSON</h6></li>
+                    <li><h6>"Classes" and Prototypal Inheritance (Time permitting)</h6></li>
+                </ul>
+            </ul>
+
+            <li><h4>JavaScript Document Object Model APIs and jQuery</h4></li>
+            <ul>
+                <li><h6>Searching and manipulating the DOM</h6></li>
+                <li><h6>Building structures programmatically (jQuery)</h6></li>
+                <ul>
+                    <li><small>Build a table dynamically vs statically</small></li>
+                </ul>
+            </ul>
+
+            <li><h4>Asynchronous, Event-driven programming and Ajax</h4></li>
+            <ul>
+                <li><h5>Event-based flow of control</h5></li>
+                <ul>
+                    <li><h6>Loading data from the server</h6></li>
+                    <li><h6>Reacting to user actions</h6></li>
+                </ul>
+            </ul>
+            <li><h4>HTTP and more Ajax</h4></li>
+            <ul>
+                <li><h6>More about asynchronously sending and receiving information.</h6></li>
+                <li><h6>Posting data</h6></li>
+                <li><h6>Getting data</h6></li>
+                <li><h6>Cross-Origin Policy, JSONP, and proxy-ing requests</h6></li>
+            </ul>
+            <li><h4>Tools for bioinformatics programmers</h4></li>
+            <ul>
+                <li><h5>BioJS</h5></li>
+                <ul>
+                    <li>
+                        <h6>Sequence View and other select entries from <a href="http://registry.biojs.net/">http://registry.biojs.net/</a></h6>
+                        </li>
+                    </ul>
+                    <li><h5>General purpose libraries I use (besides jQuery)</h5></li>
+                    <ul>
+                        <li><h6>D3</h6></li>
+                        <li><h6>Highcharts</h6></li>
+                        <li><h6>LoDash</h6></li>
+                        <li><h6>AngularJS (Time permitting)</h6></li>
+                    </ul>
+                </ul>
+                <li><h4>Web Application Architecture</h4></li>
+                <ul>
+                    <li><h6>Something other than CGI</h6>
+                    <p>CGI is a bare-bones, raw socket-like method of writing web applications. There are more abstracted, modern methods for building them in just about every language in active use for rapid development</p>
+                    </li>
+                    <li><h6>"What does this page do?"</h6><p>
+                    </p></li>
+                    <li><h6>Routing and Web Service endpoints</h6><p>
+                    </p></li>
+                    <li><h6>REST architecture</h6><p>
+                    </p></li>
+                </ul>
+                <li><h4>Report Building</h4></li>
+                <ul>
+                    <li>Tools by language</li>
+                    <ul>
+                        <li><h5>Python</h5></li>
+                        <ul>
+                            <li><h6>Pweave</h6></li>
+                            <li><h6>IPython Notebooks</h6></li>
+                            <li><h6>Templating engines</h6></li>
+                        </ul>
+                        <li><h5>R</h5></li>
+                        <ul>
+                            <li><h6>knitr</h6></li>
+                            <li><h6>Sweave</h6></li>
+                        </ul>
+                    </ul>
+                </ul>
+            </ul>
+            <p>
+                Many of these topics will be related, but I've ordered the topics in a waterfall so that the topics flow into each other logically.
+            </p>
+            <p>
+                I'd be available to answer questions during the final project month as well. I worked with four or five groups answering questions and helping with technical problems last year.
+            </p>
+</body>
+    </div>
+</div>
+</body>
+</html>

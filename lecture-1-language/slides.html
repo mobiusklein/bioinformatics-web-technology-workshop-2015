@@ -122,7 +122,7 @@ function pow(x, p){
 
         </section>
         <section>
-          <h2 id="basic-types">Basic Types</h2>
+          <section><h2 id="basic-types">Basic Types</h2>
 <ul>
 <li>Number   <code>42, 3.1415</code></li>
 <li>Boolean   <code>true, false, new Boolean(42)</code></li>
@@ -131,18 +131,14 @@ function pow(x, p){
 <li><strong>Object</strong>    <code>{&#39;type&#39;: &#39;fox&#39;, &#39;color&#39;: &#39;brown&#39;}}</code></li>
 </ul>
 <p>Also <code>null</code> (user null values), <code>undefined</code> (language null values), and <code>NaN</code> are distinct but similar non-value special types</p>
-
-        </section>
-        <section>
-          <h2 id="additional-standard-types">Additional Standard Types</h2>
+</section><section><h2 id="additional-standard-types">Additional Standard Types</h2>
 <ul>
 <li>Date     <span class='de-emphasis'><code>Sun Mar 15 2015 22:21:19 GMT-0400 (Eastern Daylight Time</code></span></li>
 <li>RegExp   <code>/([A-Z][a-z]+)/</code> <span class='de-emphasis'>(Note the <code>/.../</code> literal syntax)</span></li>
-<li><p>Error    <span class='de-emphasis'><code>throw new Error(&quot;You are mistaken&quot;);</code></span></p>
-<p>Many more built-in Objects and Types have been added, most with with specialized behavior such as specialized strongly typed ArrayViews. </p>
-</li>
+<li>Error    <span class='de-emphasis'><code>throw new Error(&quot;You are mistaken&quot;);</code></span></li>
 </ul>
-
+<p>Many more built-in Objects and Types have been added, most with with specialized behavior such as specialized strongly typed ArrayViews. </p>
+</section>
         </section>
         <section>
           <h2 id="scope-rules">Scope Rules</h2>
@@ -169,21 +165,21 @@ function myFunc(a, b){
         <section>
           <h2 id="when-can-hoisting-go-wrong-">When can hoisting go wrong?</h2>
 <h3 id="a-contrived-example-">A contrived example...</h3>
-<pre><code class="lang-javascript"> var state = &#39;loading&#39;
+<pre><code class="lang-javascript">  var state = &#39;loading&#39;
 
- function update(data){
-    console.log(state) // Should say &quot;loading&quot;
-    if(state == &#39;loading&#39;){ // We&#39;ll check the global variable
-        var state = &#39;isLoading&#39; // and shadow it internally
-    }
-    console.log(state) // Should say &quot;isLoading&quot;
- }
- update()
+  function update(data){
+     console.log(state) // Should say &quot;loading&quot;
+     if(state == &#39;loading&#39;){ // We&#39;ll check the global variable
+         var state = &#39;isLoading&#39; // and shadow it internally
+     }
+     console.log(state) // Should say &quot;isLoading&quot;
+  }
+  update()
 </code></pre>
 
         </section>
         <section>
-          <h2 id="operators-binary-numerical">Operators - Binary Numerical</h2>
+          <section><h2 id="operators-binary-numerical">Operators - Binary Numerical</h2>
 <pre><code class="lang-javascript">// Binary numerical operators are as you expect them
 num8 = 3 + 5
 num2 = num8 - 6
@@ -196,43 +192,40 @@ console.log([12, 17] + [13, 19]) // Everyone else is a bit confused...
 
 console.log((5 &gt; 2) &amp;&amp; ((3 &lt; 2) || true)) // Boolean binaries are as expected
 </code></pre>
-
-        </section>
-        <section>
-          <h2 id="operators-comparison">Operators - Comparison</h2>
+</section><section><h2 id="operators-comparison">Operators - Comparison</h2>
 <pre><code class="lang-javascript">// Numbers are well defined for ordinal comparison
 55 &gt;= 50
 // Arrays and Strings are lexically ordered
 &quot;ab&quot; &lt; &quot;ba&quot;
 </code></pre>
-
+</section>
         </section>
         <section>
           <h2 id="operators-equality">Operators - Equality</h2>
-<pre><code class="lang-javascript">//Naturally numbers work
-4 == 2 + 2
+<pre><code class="lang-javascript">  //Naturally numbers work
+  4 == 2 + 2
 
-//As do strings
-&quot;Quick brown fox&quot; != &quot;quick brown fox&quot;
+  //As do strings
+  &quot;Quick brown fox&quot; != &quot;quick brown fox&quot;
 
-//But Arrays and Objects do not have any &quot;deep equality testing&quot;
-a = [1, 2]
-console.log(a == [1, 2])
-console.log(a == a)
+  //But Arrays and Objects do not have any &quot;deep equality testing&quot;
+  a = [1, 2]
+  console.log(a == [1, 2])
+  console.log(a == a)
 </code></pre>
 
         </section>
         <section>
           <h2 id="gotchas-automatic-type-coercion-and-">Gotchas - Automatic type coercion and ===</h2>
-<pre><code class="lang-javascript">//Don&#39;t
-console.log(1 == &quot;1&quot;)
-console.log(null == undefined)
-//Do
-console.log(1 === &quot;1&quot;)
-console.log(null === undefined)
+<pre><code class="lang-javascript">  //Don&#39;t
+  console.log(1 == &quot;1&quot;)
+  console.log(null == undefined)
+  //Do
+  console.log(1 === &quot;1&quot;)
+  console.log(null === undefined)
 </code></pre>
-<p>The double-equals tries to find any way to make the values equal, including casting them to different types.</p>
-<p>The triple-equals is strict and does not allow type conversion. The inequality analog is <code>!==</code>.</p>
+<p> The double-equals tries to find any way to make the values equal, including  casting them to different types.</p>
+<p> The triple-equals is strict and does not allow type conversion. The inequality  analog is <code>!==</code>.</p>
 
         </section>
         <section>
@@ -467,7 +460,10 @@ Object.prototype.greet = function() { console.log(this, &quot; says Hello&quot;)
 </code></pre>
 <p>In the normal, &quot;unbound&quot; context, <code>this</code> refers to the top-level <code>Window</code> object, also referenced by <code>window</code>.</p>
 <p>When evaluating a function bound to an object or its prototype, <code>this</code> refers to the calling object</p>
-<h3 id="binding-a-function">Binding a function</h3>
+
+        </section>
+        <section>
+          <h3 id="binding-a-function">Binding a function</h3>
 <p>You can bind a function to an object without adding it to the prototype by using the <code>Function</code> method <code>bind</code>.</p>
 <pre><code class="lang-javascript">pi = new Number(Math.PI)
 pi.concat = [1, 2, 3, 4].concat.bind(pi)
@@ -548,8 +544,9 @@ console.log(protein.translate)
         </section>
         <section>
           <h3 id="javascript-standard-library-resources">JavaScript Standard Library Resources</h3>
-<p>[The Mozilla Developers Network Javascript Reference]
-[W3C Schools JavaScript Reference]</p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript">The Mozilla Developers Network Javascript Reference</a>
+<a href="http://www.w3schools.com/js/default.asp">W3C Schools JavaScript Reference</a></p>
+<p>If you want a function but don&#39;t know if it exists, check one of these first.</p>
 
         </section>
 

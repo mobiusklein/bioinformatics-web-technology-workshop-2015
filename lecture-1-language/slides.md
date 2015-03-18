@@ -108,12 +108,12 @@ function pow(x, p){
 Also `null` (user null values), `undefined` (language null values), and `NaN` are distinct but similar non-value special types
 
 
- ## Additional Standard Types
- - Date     <span class='de-emphasis'>`Sun Mar 15 2015 22:21:19 GMT-0400 (Eastern Daylight Time`</span>
- - RegExp   `/([A-Z][a-z]+)/` <span class='de-emphasis'>(Note the `/.../` literal syntax)</span>
- - Error    <span class='de-emphasis'>`throw new Error("You are mistaken");`</span>
+  ## Additional Standard Types
+  - Date     <span class='de-emphasis'>`Sun Mar 15 2015 22:21:19 GMT-0400 (Eastern Daylight Time`</span>
+  - RegExp   `/([A-Z][a-z]+)/` <span class='de-emphasis'>(Note the `/.../` literal syntax)</span>
+  - Error    <span class='de-emphasis'>`throw new Error("You are mistaken");`</span>
 
- Many more built-in Objects and Types have been added, most with with specialized behavior such as specialized strongly typed ArrayViews. 
+  Many more built-in Objects and Types have been added, most with with specialized behavior such as specialized strongly typed ArrayViews. 
 
 
 ## Scope Rules
@@ -140,18 +140,18 @@ function myFunc(a, b){
 
  ## When can hoisting go wrong?
  ### A contrived example...
- ```javascript
- var state = 'loading'
-
- function update(data){
-    console.log(state) // Should say "loading"
-    if(state == 'loading'){ // We'll check the global variable
-        var state = 'isLoading' // and shadow it internally
-    }
-    console.log(state) // Should say "isLoading"
- }
- update()
- ```
+  ```javascript
+  var state = 'loading'
+ 
+  function update(data){
+     console.log(state) // Should say "loading"
+     if(state == 'loading'){ // We'll check the global variable
+         var state = 'isLoading' // and shadow it internally
+     }
+     console.log(state) // Should say "isLoading"
+  }
+  update()
+  ```
 
 
 ## Operators - Binary Numerical
@@ -170,42 +170,44 @@ console.log((5 > 2) && ((3 < 2) || true)) // Boolean binaries are as expected
 ```
 
 
-## Operators - Comparison
-```javascript
-// Numbers are well defined for ordinal comparison
-55 >= 50
-// Arrays and Strings are lexically ordered
-"ab" < "ba"
-```
+  ## Operators - Comparison
+  ```javascript
+  // Numbers are well defined for ordinal comparison
+  55 >= 50
+  // Arrays and Strings are lexically ordered
+  "ab" < "ba"
+  ```
 
 
-## Operators - Equality
-```javascript
-//Naturally numbers work
-4 == 2 + 2
 
-//As do strings
-"Quick brown fox" != "quick brown fox"
+ ## Operators - Equality
+  ```javascript
+  //Naturally numbers work
+  4 == 2 + 2
+  
+  //As do strings
+  "Quick brown fox" != "quick brown fox"
+  
+  //But Arrays and Objects do not have any "deep equality testing"
+  a = [1, 2]
+  console.log(a == [1, 2])
+  console.log(a == a)
+  ```
 
-//But Arrays and Objects do not have any "deep equality testing"
-a = [1, 2]
-console.log(a == [1, 2])
-console.log(a == a)
-```
 
 
-## Gotchas - Automatic type coercion and ===
-```javascript
-//Don't
-console.log(1 == "1")
-console.log(null == undefined)
-//Do
-console.log(1 === "1")
-console.log(null === undefined)
-```
-The double-equals tries to find any way to make the values equal, including casting them to different types.
-
-The triple-equals is strict and does not allow type conversion. The inequality analog is `!==`.
+ ## Gotchas - Automatic type coercion and ===
+  ```javascript
+  //Don't
+  console.log(1 == "1")
+  console.log(null == undefined)
+  //Do
+  console.log(1 === "1")
+  console.log(null === undefined)
+  ```
+ The double-equals tries to find any way to make the values equal, including  casting them to different types.
+ 
+ The triple-equals is strict and does not allow type conversion. The inequality  analog is `!==`.
 
 
 ## More on Object
@@ -445,6 +447,7 @@ In the normal, "unbound" context, `this` refers to the top-level `Window` object
 
 When evaluating a function bound to an object or its prototype, `this` refers to the calling object
 
+
 ### Binding a function
 You can bind a function to an object without adding it to the prototype by using the `Function` method `bind`.
 ```javascript
@@ -529,5 +532,7 @@ Here, traits are passed on by the prototype.
 
 
 ### JavaScript Standard Library Resources
-[The Mozilla Developers Network Javascript Reference]
-[W3C Schools JavaScript Reference]
+[The Mozilla Developers Network Javascript Reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[W3C Schools JavaScript Reference](http://www.w3schools.com/js/default.asp)
+
+If you want a function but don't know if it exists, check one of these first.
