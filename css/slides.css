@@ -5,3 +5,8 @@
 .de-emphasis {
     font-size: smaller !important;
 }
+
+table.two-cols tr td {
+    width: 50%;
+    font-size: 0.6em !important;
+}

@@ -31,7 +31,9 @@ An introduction to the wide world of web technology and how we can use it in sci
 
 
 ### On Demo Code in these slides
-Most of the demo code on these slides is working, intended to be ran either by pasting it into a console or running it by adding it to a webpage <script></script> tag. If you have your console visible, press `Enter` on any slide with a code block to see it executed.
+Most of the demo code on these slides is working, intended to be ran either by pasting it into a console or running it by adding it to a webpage <script></script> tag. 
+
+If you have your console visible, press `Enter` on any slide with a code block to see it executed.
 
 
 ### Lecture 1 - A language primer
@@ -60,6 +62,31 @@ Because it made sense <code>{currentYear - 1996}</code> years ago. Netscape want
 JavaScript is used to implement `client-side` logic, and to orchestrate communication with the `server`
 
 
+## What is the distinction between Client and Server?
+<table class='two-cols'>
+    <thead>
+        <tr>
+            <th>Client-Side</th>
+            <th>Server-Side</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>The user directly interacts with the client in real time, usually including graphical and textual displays.</td>
+            <td>The server communicates with many clients at once, sending and recieving text or binary streams of information.</td>
+        </tr>
+        <tr>
+            <td>The client runs JavaScript code, locally on the user's computer.</td>
+            <td>The server runs any language you choose to write it in, may be many languages. It may be running on one or more computers</td>
+        </tr>
+        <tr>
+            <td>The client communicates with the server giving the illusion of communication between the user and the server.</td>
+            <td>The server tends to have access to databases and other centralized resources, querying them on behalf of clients.</td>
+        </tr>
+    </tbody>
+</table>
+
+
 ## Is JavaScript not a real programming language?
 
 It's real (Turing Complete), it just has a limited sandbox it plays in provided by the host (web browser). It does not directly have:
@@ -73,13 +100,13 @@ It's real (Turing Complete), it just has a limited sandbox it plays in provided 
 ```javascript
 console.log(msg, msg, ...) //Print to console function
 console.trace() //Traceback display function
-console.table([a, b, c, ...]) //Convenience print function for Arrays of Heterogenous Objects
+console.table([a, b, ...]) //Print function for Arrays of Objects
 alert(msg) //Pop up information window
 ```
-Always
+When something goes wrong, they are your first line of defense.
 
 
-## What kind of language is it?
+## What kind of language is JavaScript?
 - Dynamic
 - Multi-paradigm
     - Object-Oriented (Prototypal)
@@ -372,7 +399,7 @@ There are a few 3rd-party libraries that add sophisticated library loading featu
 #### Simple Grouping
 You can also roll your own namespacing
 ```javascript
-var TextUtils = {} //Define an object literal
+TextUtils = {} //Define an object literal
 TextUtils.completePhrase = function(text, lookUp){
     var pattern = new RegExp(text, 'i'); //Global and ignore case
     var matches = [];

@@ -57,7 +57,8 @@
         </section>
         <section>
           <h3 id="on-demo-code-in-these-slides">On Demo Code in these slides</h3>
-<p>Most of the demo code on these slides is working, intended to be ran either by pasting it into a console or running it by adding it to a webpage <script></script> tag. If you have your console visible, press <code>Enter</code> on any slide with a code block to see it executed.</p>
+<p>Most of the demo code on these slides is working, intended to be ran either by pasting it into a console or running it by adding it to a webpage <script></script> tag. </p>
+<p>If you have your console visible, press <code>Enter</code> on any slide with a code block to see it executed.</p>
 
         </section>
         <section>
@@ -86,6 +87,31 @@
 
         </section>
         <section>
+          <h2 id="what-is-the-distinction-between-client-and-server-">What is the distinction between Client and Server?</h2>
+<table class='two-cols'>
+    <thead>
+        <tr>
+            <th>Client-Side</th>
+            <th>Server-Side</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>The user directly interacts with the client in real time, usually including graphical and textual displays.</td>
+            <td>The server communicates with many clients at once, sending and recieving text or binary streams of information.</td>
+        </tr>
+        <tr>
+            <td>The client runs JavaScript code, locally on the user&#39;s computer.</td>
+            <td>The server runs any language you choose to write it in, may be many languages. It may be running on one or more computers</td>
+        </tr>
+        <tr>
+            <td>The client communicates with the server giving the illusion of communication between the user and the server.</td>
+            <td>The server tends to have access to databases and other centralized resources, querying them on behalf of clients.</td>
+        </tr>
+    </tbody>
+</table>
+        </section>
+        <section>
           <h2 id="is-javascript-not-a-real-programming-language-">Is JavaScript not a real programming language?</h2>
 <p>It&#39;s real (Turing Complete), it just has a limited sandbox it plays in provided by the host (web browser). It does not directly have:</p>
 <ul>
@@ -99,14 +125,14 @@
           <h2 id="data-inspection-and-debugging">Data Inspection and Debugging</h2>
 <pre><code class="lang-javascript">console.log(msg, msg, ...) //Print to console function
 console.trace() //Traceback display function
-console.table([a, b, c, ...]) //Convenience print function for Arrays of Heterogenous Objects
+console.table([a, b, ...]) //Print function for Arrays of Objects
 alert(msg) //Pop up information window
 </code></pre>
-<p>Always</p>
+<p>When something goes wrong, they are your first line of defense.</p>
 
         </section>
         <section>
-          <h2 id="what-kind-of-language-is-it-">What kind of language is it?</h2>
+          <h2 id="what-kind-of-language-is-javascript-">What kind of language is JavaScript?</h2>
 <ul>
 <li>Dynamic</li>
 <li>Multi-paradigm<ul>
@@ -400,7 +426,7 @@ function completePhrase(text, lookUp){
           <h3 id="namspacing-and-modules">Namspacing and Modules</h3>
 <h4 id="simple-grouping">Simple Grouping</h4>
 <p>You can also roll your own namespacing</p>
-<pre><code class="lang-javascript">var TextUtils = {} //Define an object literal
+<pre><code class="lang-javascript">TextUtils = {} //Define an object literal
 TextUtils.completePhrase = function(text, lookUp){
     var pattern = new RegExp(text, &#39;i&#39;); //Global and ignore case
     var matches = [];
