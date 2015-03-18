@@ -36,6 +36,16 @@
 
         </section>
         <section>
+          <h2 id="what-people-are-building-reusable-parts-for">What people are building reusable parts for</h2>
+<ul>
+<li><a href="http://biasmv.github.io/pv/demo.html">WebGL Protein Viewer</a></li>
+<li><a href="http://workmen.biojs.net/demo/muts-needle-plot/TP53_OVARY">Needle Plot Visualizing Mutation Site Distribution</a></li>
+<li><a href="http://workmen.biojs.net/demo/biojs-pcviz/simple">Interactive Pathway/Network Visualization</a></li>
+<li><a href="http://openscreen.cz/software/inchlib/use_cases/12">Interactive, Filterable, Hierarchical Cluster Heat Maps</a></li>
+</ul>
+
+        </section>
+        <section>
           <h2 id="how-to-unlock-the-powers-of-your-web-browser">How to unlock the powers of your web browser</h2>
 <ul>
 <li><a href="https://developer.chrome.com/devtools">Chrome Devtools</a></li>
@@ -43,6 +53,11 @@
 <li><a href="https://msdn.microsoft.com/en-us/library/ie/gg699336%28v=vs.85%29.aspx">Internet Explorer</a></li>
 <li><a href="https://developer.apple.com/library/mac/documentation/AppleApplications/Conceptual/Safari_Developer_Guide/KeyboardShortcuts/KeyboardShortcuts.html">Safari</a></li>
 </ul>
+
+        </section>
+        <section>
+          <h3 id="on-demo-code-in-these-slides">On Demo Code in these slides</h3>
+<p>Most of the demo code on these slides is working, intended to be ran either by pasting it into a console or running it by adding it to a webpage <script></script> tag. If you have your console visible, press <code>Enter</code> on any slide with a code block to see it executed.</p>
 
         </section>
         <section>
@@ -65,17 +80,30 @@
 
         </section>
         <section>
-          <section><h2 id="why-yet-another-scripting-language-">Why yet another scripting language?</h2>
+          <h2 id="why-yet-another-scripting-language-">Why yet another scripting language?</h2>
 <p>Because it made sense <code>{currentYear - 1996}</code> years ago. Netscape wanted a light-weight language to add dynamic behavior to web pages that was not <code>Java</code>.</p>
 <p>JavaScript is used to implement <code>client-side</code> logic, and to orchestrate communication with the <code>server</code></p>
-</section><section><h2 id="is-javascript-not-a-real-programming-language-">Is JavaScript not a real programming language?</h2>
+
+        </section>
+        <section>
+          <h2 id="is-javascript-not-a-real-programming-language-">Is JavaScript not a real programming language?</h2>
 <p>It&#39;s real (Turing Complete), it just has a limited sandbox it plays in provided by the host (web browser). It does not directly have:</p>
 <ul>
 <li>File System</li>
 <li>Threading</li>
 <li>Other System Calls</li>
 </ul>
-</section>
+
+        </section>
+        <section>
+          <h2 id="data-inspection-and-debugging">Data Inspection and Debugging</h2>
+<pre><code class="lang-javascript">console.log(msg, msg, ...) //Print to console function
+console.trace() //Traceback display function
+console.table([a, b, c, ...]) //Convenience print function for Arrays of Heterogenous Objects
+alert(msg) //Pop up information window
+</code></pre>
+<p>Always</p>
+
         </section>
         <section>
           <h2 id="what-kind-of-language-is-it-">What kind of language is it?</h2>
@@ -113,16 +141,53 @@ function pow(x, p){
 
         </section>
         <section>
-          <h2 id="some-comments">Some comments</h2>
-<p> JavaScript has a semi-colon delimited grammar, but the semi-colons are &quot;optional&quot;. Most of the time, they can be omitted, but this may cause expressions to be fused if they are a single syntactic expression</p>
-<pre><code class="lang-javascript"> foo = [1, 2, 33]
- bar = foo
- [1] + 1
+          <h2 id="common-structures-flow-of-control">Common Structures - Flow of Control</h2>
+<pre><code class="lang-javascript">if(cond){
+    //then
+} 
+else if (cond2){
+    //then
+}
+else{
+
+}
+
+switch(expr){
+    case cond:
+        //body
+        break;
+    case cond2:
+        //body
+        break;
+    default:
+        //body
+}
 </code></pre>
 
         </section>
         <section>
-          <section><h2 id="basic-types">Basic Types</h2>
+          <h2 id="common-structures-loops">Common Structures - Loops</h2>
+<pre><code class="lang-javascript">for(iterator initialization; conditional check; iterator update){
+    //body, break, continue
+}
+
+while(cond){
+    //body, break, continue
+}
+</code></pre>
+
+        </section>
+        <section>
+          <h2 id="grammar">Grammar</h2>
+<p>JavaScript has a semi-colon delimited grammar, but the semi-colons are &quot;optional&quot;. Most of the time, they can be omitted, but this may cause expressions to be fused if they are a single syntactic expression</p>
+<pre><code class="lang-javascript">foo = [1, 2, 33]
+bar = foo
+[1] + 1
+</code></pre>
+
+        </section>
+        <section>
+          <h2 id="basic-types">Basic Types</h2>
 <ul>
 <li>Number   <code>42, 3.1415</code></li>
 <li>Boolean   <code>true, false, new Boolean(42)</code></li>
@@ -131,14 +196,17 @@ function pow(x, p){
 <li><strong>Object</strong>    <code>{&#39;type&#39;: &#39;fox&#39;, &#39;color&#39;: &#39;brown&#39;}}</code></li>
 </ul>
 <p>Also <code>null</code> (user null values), <code>undefined</code> (language null values), and <code>NaN</code> are distinct but similar non-value special types</p>
-</section><section><h2 id="additional-standard-types">Additional Standard Types</h2>
+
+        </section>
+        <section>
+          <h2 id="additional-standard-types">Additional Standard Types</h2>
 <ul>
 <li>Date     <span class='de-emphasis'><code>Sun Mar 15 2015 22:21:19 GMT-0400 (Eastern Daylight Time</code></span></li>
 <li>RegExp   <code>/([A-Z][a-z]+)/</code> <span class='de-emphasis'>(Note the <code>/.../</code> literal syntax)</span></li>
 <li>Error    <span class='de-emphasis'><code>throw new Error(&quot;You are mistaken&quot;);</code></span></li>
 </ul>
 <p>Many more built-in Objects and Types have been added, most with with specialized behavior such as specialized strongly typed ArrayViews. </p>
-</section>
+
         </section>
         <section>
           <h2 id="scope-rules">Scope Rules</h2>
@@ -430,7 +498,7 @@ typeof function(args){console.log(args)}
         </section>
         <section>
           <h3 id="prototypes">Prototypes</h3>
-<p>All JavaScript types have a <code>prototype</code>, an object that defines how they are created. When you create an object with the <code>new</code> operator, you&#39;re creating a new base <code>Object</code> type as a new <em>object</em>, adding the desired type&#39;s <code>prototype</code> to it, and running any constructor logic on the resulting structure.</p>
+<p>All JavaScript types have a <code>prototype</code>, an object that defines some common properties that all members of that type share. When you create an object with the <code>new</code> operator, you&#39;re creating a new base <code>Object</code>, adding the desired type&#39;s <code>prototype</code> to it, and then running any constructor logic on it.</p>
 <p>A <code>prototype</code> is just an object, so we can slap on new values and they will automatically be available on all objects that share that prototype</p>
 
         </section>
@@ -539,7 +607,7 @@ protein = new ProteinSequence(&quot;SIMQNISGREAT&quot;)
 protein.toString()
 console.log(protein.translate)
 </code></pre>
-<p>Here, traits are passed on by the prototype.</p>
+<p>Here, traits are passed on by the prototype, which is copied by <code>Object.create</code>.</p>
 
         </section>
         <section>

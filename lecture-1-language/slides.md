@@ -16,11 +16,22 @@ An introduction to the wide world of web technology and how we can use it in sci
 - NCBI BLAST Website
 
 
+## What people are building reusable parts for
+- [WebGL Protein Viewer](http://biasmv.github.io/pv/demo.html)
+- [Needle Plot Visualizing Mutation Site Distribution](http://workmen.biojs.net/demo/muts-needle-plot/TP53_OVARY)
+- [Interactive Pathway/Network Visualization](http://workmen.biojs.net/demo/biojs-pcviz/simple)
+- [Interactive, Filterable, Hierarchical Cluster Heat Maps](http://openscreen.cz/software/inchlib/use_cases/12)
+
+
 ## How to unlock the powers of your web browser
 - [Chrome Devtools](https://developer.chrome.com/devtools)
 - [FireFox WebConsole](https://developer.mozilla.org/en-US/docs/Tools/Web_Console)
 - [Internet Explorer](https://msdn.microsoft.com/en-us/library/ie/gg699336%28v=vs.85%29.aspx)
 - [Safari](https://developer.apple.com/library/mac/documentation/AppleApplications/Conceptual/Safari_Developer_Guide/KeyboardShortcuts/KeyboardShortcuts.html)
+
+
+### On Demo Code in these slides
+Most of the demo code on these slides is working, intended to be ran either by pasting it into a console or running it by adding it to a webpage <script></script> tag. If you have your console visible, press `Enter` on any slide with a code block to see it executed.
 
 
 ### Lecture 1 - A language primer
@@ -49,13 +60,23 @@ Because it made sense <code>{currentYear - 1996}</code> years ago. Netscape want
 JavaScript is used to implement `client-side` logic, and to orchestrate communication with the `server`
 
 
-  ## Is JavaScript not a real programming language?
+## Is JavaScript not a real programming language?
 
-  It's real (Turing Complete), it just has a limited sandbox it plays in provided by the host (web browser). It does not directly have:
+It's real (Turing Complete), it just has a limited sandbox it plays in provided by the host (web browser). It does not directly have:
 
-  - File System
-  - Threading
-  - Other System Calls
+- File System
+- Threading
+- Other System Calls
+
+
+## Data Inspection and Debugging
+```javascript
+console.log(msg, msg, ...) //Print to console function
+console.trace() //Traceback display function
+console.table([a, b, c, ...]) //Convenience print function for Arrays of Heterogenous Objects
+alert(msg) //Pop up information window
+```
+Always
 
 
 ## What kind of language is it?
@@ -88,14 +109,51 @@ function pow(x, p){
 ```
 
 
- ## Some comments
- JavaScript has a semi-colon delimited grammar, but the semi-colons are "optional". Most of the time, they can be omitted, but this may cause expressions to be fused if they are a single syntactic expression
+## Common Structures - Flow of Control
+```javascript
+if(cond){
+    //then
+} 
+else if (cond2){
+    //then
+}
+else{
 
- ```javascript
- foo = [1, 2, 33]
- bar = foo
- [1] + 1
- ```
+}
+
+switch(expr){
+    case cond:
+        //body
+        break;
+    case cond2:
+        //body
+        break;
+    default:
+        //body
+}
+```
+
+
+## Common Structures - Loops
+```javascript
+for(iterator initialization; conditional check; iterator update){
+    //body, break, continue
+}
+
+while(cond){
+    //body, break, continue
+}
+```
+
+
+## Grammar
+JavaScript has a semi-colon delimited grammar, but the semi-colons are "optional". Most of the time, they can be omitted, but this may cause expressions to be fused if they are a single syntactic expression
+
+```javascript
+foo = [1, 2, 33]
+bar = foo
+[1] + 1
+```
 
 
 ## Basic Types
@@ -108,12 +166,12 @@ function pow(x, p){
 Also `null` (user null values), `undefined` (language null values), and `NaN` are distinct but similar non-value special types
 
 
-  ## Additional Standard Types
-  - Date     <span class='de-emphasis'>`Sun Mar 15 2015 22:21:19 GMT-0400 (Eastern Daylight Time`</span>
-  - RegExp   `/([A-Z][a-z]+)/` <span class='de-emphasis'>(Note the `/.../` literal syntax)</span>
-  - Error    <span class='de-emphasis'>`throw new Error("You are mistaken");`</span>
+## Additional Standard Types
+- Date     <span class='de-emphasis'>`Sun Mar 15 2015 22:21:19 GMT-0400 (Eastern Daylight Time`</span>
+- RegExp   `/([A-Z][a-z]+)/` <span class='de-emphasis'>(Note the `/.../` literal syntax)</span>
+- Error    <span class='de-emphasis'>`throw new Error("You are mistaken");`</span>
 
-  Many more built-in Objects and Types have been added, most with with specialized behavior such as specialized strongly typed ArrayViews. 
+Many more built-in Objects and Types have been added, most with with specialized behavior such as specialized strongly typed ArrayViews. 
 
 
 ## Scope Rules
@@ -414,7 +472,7 @@ Yes, Array is an Object, not its own type.
 
 
 ### Prototypes
-All JavaScript types have a `prototype`, an object that defines how they are created. When you create an object with the `new` operator, you're creating a new base `Object` type as a new *object*, adding the desired type's `prototype` to it, and running any constructor logic on the resulting structure.
+All JavaScript types have a `prototype`, an object that defines some common properties that all members of that type share. When you create an object with the `new` operator, you're creating a new base `Object`, adding the desired type's `prototype` to it, and then running any constructor logic on it.
 
 A `prototype` is just an object, so we can slap on new values and they will automatically be available on all objects that share that prototype
 
@@ -528,7 +586,7 @@ protein = new ProteinSequence("SIMQNISGREAT")
 protein.toString()
 console.log(protein.translate)
 ```
-Here, traits are passed on by the prototype.
+Here, traits are passed on by the prototype, which is copied by `Object.create`.
 
 
 ### JavaScript Standard Library Resources
