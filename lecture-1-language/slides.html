@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=1024, user-scalable=no">
+
+  <title>Just Another Bedecked Presentation</title>
+
+  <link id="reveal-core" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.0.0/css/reveal.min.css">
+  <link id="reveal-theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.0.0/css/theme/simple.css">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+        <section>
+          <p><script src='https://code.jquery.com/jquery-2.1.3.min.js'></script></p>
+<p><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js" type="text/javascript" charset="utf-8"></script></p>
+<p><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/languages/javascript.min.js" type="text/javascript" charset="utf-8"></script></p>
+<p><link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/monokai_sublime.min.css"></p>
+<p><link rel="stylesheet" type="text/css" href="../../css/slides.css"></p>
+<p><script src='../../js/slides.js'></script></p>
+<h2 id="javascript-and-web-technology-workshop">JavaScript and Web Technology Workshop</h2>
+<h5 id="joshua-klein">Joshua Klein</h5>
+
+        </section>
+        <section>
+          <h2 id="what-is-this-">What is this?</h2>
+<p>An introduction to the wide world of web technology and how we can use it in science. Here are a few you might already be using:</p>
+<ul>
+<li>Rstudio</li>
+<li>IPython/Jupyter Notebook</li>
+<li>NCBI BLAST Website</li>
+</ul>
+
+        </section>
+        <section>
+          <h2 id="how-to-unlock-the-powers-of-your-web-browser">How to unlock the powers of your web browser</h2>
+<ul>
+<li><a href="https://developer.chrome.com/devtools">Chrome Devtools</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Tools/Web_Console">FireFox WebConsole</a></li>
+<li><a href="https://msdn.microsoft.com/en-us/library/ie/gg699336%28v=vs.85%29.aspx">Internet Explorer</a></li>
+<li><a href="https://developer.apple.com/library/mac/documentation/AppleApplications/Conceptual/Safari_Developer_Guide/KeyboardShortcuts/KeyboardShortcuts.html">Safari</a></li>
+</ul>
+
+        </section>
+        <section>
+          <h3 id="lecture-1-a-language-primer">Lecture 1 - A language primer</h3>
+
+        </section>
+        <section>
+          <h2 id="rough-timeline-of-web-technologies">Rough Timeline of Web Technologies</h2>
+<pre><code>1991: HTML
+1994: HTML 2
+1996: CSS 1 + JavaScript
+1997: HTML 4
+1998: CSS 2 + ECMAScript 2 | Google
+2000: XHTML 1
+2002: Tableless Web Design
+2005: AJAX  | Facebook
+2009: HTML 5 + ECMAScript 5
+2015: ECMAScript 6
+</code></pre><p><cite>HTML5Rocks Slideshow @ <a href="http://slides.html5rocks.com/#landing-slide">http://slides.html5rocks.com/#landing-slide</a></cite></p>
+
+        </section>
+        <section>
+          <section><h2 id="why-yet-another-scripting-language-">Why yet another scripting language?</h2>
+<p>Because it made sense <code>{currentYear - 1996}</code> years ago. Netscape wanted a light-weight language to add dynamic behavior to web pages that was not <code>Java</code>.</p>
+<p>JavaScript is used to implement <code>client-side</code> logic, and to orchestrate communication with the <code>server</code></p>
+</section><section><h2 id="is-javascript-not-a-real-programming-language-">Is JavaScript not a real programming language?</h2>
+<p>It&#39;s real (Turing Complete), it just has a limited sandbox it plays in provided by the host (web browser). It does not directly have:</p>
+<ul>
+<li>File System</li>
+<li>Threading</li>
+<li>Other System Calls</li>
+</ul>
+</section>
+        </section>
+        <section>
+          <h2 id="what-kind-of-language-is-it-">What kind of language is it?</h2>
+<ul>
+<li>Dynamic</li>
+<li>Multi-paradigm<ul>
+<li>Object-Oriented (Prototypal)</li>
+<li>Functional</li>
+</ul>
+</li>
+<li>Asynchronous</li>
+</ul>
+
+        </section>
+        <section>
+          <h2 id="syntax">Syntax</h2>
+<pre><code class="lang-javascript">// C Family Syntax
+if (true){
+    var foo = 5;
+} else {
+    bar = new Promise(); // New non-literal objects declared with &quot;new&quot; keyword
+    console.log(bar) // Print function accessed through console API
+}
+/* Dynamically typed */
+function pow(x, p){
+    var result = x;
+    p -= 1
+    while(p &gt; 0){ //While loops and for loops exist
+        result *= x;
+        p -= 1;
+    }
+    return result
+}
+</code></pre>
+
+        </section>
+        <section>
+          <h2 id="some-comments">Some comments</h2>
+<p> JavaScript has a semi-colon delimited grammar, but the semi-colons are &quot;optional&quot;. Most of the time, they can be omitted, but this may cause expressions to be fused if they are a single syntactic expression</p>
+<pre><code class="lang-javascript"> foo = [1, 2, 33]
+ bar = foo
+ [1] + 1
+</code></pre>
+
+        </section>
+        <section>
+          <h2 id="basic-types">Basic Types</h2>
+<ul>
+<li>Number   <code>42, 3.1415</code></li>
+<li>Boolean   <code>true, false, new Boolean(42)</code></li>
+<li>String    <code>&quot;The quick brown fox jumps over the lazy dog&quot;</code></li>
+<li>Array     <code>[42, &quot;The quick brown fox&quot;, 3.1415</code></li>
+<li><strong>Object</strong>    <code>{&#39;type&#39;: &#39;fox&#39;, &#39;color&#39;: &#39;brown&#39;}}</code></li>
+</ul>
+<p>Also <code>null</code> (user null values), <code>undefined</code> (language null values), and <code>NaN</code> are distinct but similar non-value special types</p>
+
+        </section>
+        <section>
+          <h2 id="additional-standard-types">Additional Standard Types</h2>
+<ul>
+<li>Date     <span class='de-emphasis'><code>Sun Mar 15 2015 22:21:19 GMT-0400 (Eastern Daylight Time</code></span></li>
+<li>RegExp   <code>/([A-Z][a-z]+)/</code> <span class='de-emphasis'>(Note the <code>/.../</code> literal syntax)</span></li>
+<li><p>Error    <span class='de-emphasis'><code>throw new Error(&quot;You are mistaken&quot;);</code></span></p>
+<p>Many more built-in Objects and Types have been added, most with with specialized behavior such as specialized strongly typed ArrayViews. </p>
+</li>
+</ul>
+
+        </section>
+        <section>
+          <h2 id="scope-rules">Scope Rules</h2>
+<pre><code class="lang-javascript">//Global Scope
+var myVar = &quot;A global variable&quot;;
+
+function myFunc(a, b){
+    //Function Scope
+    var funcVal = &quot;A local variable&quot;
+    if(funcVal.length &gt; a){
+        //Block variable is hoisted
+        var result = true;
+    } else {
+        //Variable name used without declaration
+        //is automatically looked up in global &quot;window&quot; scope
+        myVar = b
+    }
+
+    return result;
+}
+</code></pre>
+
+        </section>
+        <section>
+          <h2 id="when-can-hoisting-go-wrong-">When can hoisting go wrong?</h2>
+<h3 id="a-contrived-example-">A contrived example...</h3>
+<pre><code class="lang-javascript"> var state = &#39;loading&#39;
+
+ function update(data){
+    console.log(state) // Should say &quot;loading&quot;
+    if(state == &#39;loading&#39;){ // We&#39;ll check the global variable
+        var state = &#39;isLoading&#39; // and shadow it internally
+    }
+    console.log(state) // Should say &quot;isLoading&quot;
+ }
+ update()
+</code></pre>
+
+        </section>
+        <section>
+          <h2 id="operators-binary-numerical">Operators - Binary Numerical</h2>
+<pre><code class="lang-javascript">// Binary numerical operators are as you expect them
+num8 = 3 + 5
+num2 = num8 - 6
+num10_4 = num8 * 1.3
+num2 = 6 / 3
+
+console.log(&quot;Hello, &quot; + &quot;World&quot;) // Strings know about addition
+
+console.log([12, 17] + [13, 19]) // Everyone else is a bit confused...
+
+console.log((5 &gt; 2) &amp;&amp; ((3 &lt; 2) || true)) // Boolean binaries are as expected
+</code></pre>
+
+        </section>
+        <section>
+          <h2 id="operators-comparison">Operators - Comparison</h2>
+<pre><code class="lang-javascript">// Numbers are well defined for ordinal comparison
+55 &gt;= 50
+// Arrays and Strings are lexically ordered
+&quot;ab&quot; &lt; &quot;ba&quot;
+</code></pre>
+
+        </section>
+        <section>
+          <h2 id="operators-equality">Operators - Equality</h2>
+<pre><code class="lang-javascript">//Naturally numbers work
+4 == 2 + 2
+
+//As do strings
+&quot;Quick brown fox&quot; != &quot;quick brown fox&quot;
+
+//But Arrays and Objects do not have any &quot;deep equality testing&quot;
+a = [1, 2]
+console.log(a == [1, 2])
+console.log(a == a)
+</code></pre>
+
+        </section>
+        <section>
+          <h2 id="gotchas-automatic-type-coercion-and-">Gotchas - Automatic type coercion and ===</h2>
+<pre><code class="lang-javascript">//Don&#39;t
+console.log(1 == &quot;1&quot;)
+console.log(null == undefined)
+//Do
+console.log(1 === &quot;1&quot;)
+console.log(null === undefined)
+</code></pre>
+<p>The double-equals tries to find any way to make the values equal, including casting them to different types.</p>
+<p>The triple-equals is strict and does not allow type conversion. The inequality analog is <code>!==</code>.</p>
+
+        </section>
+        <section>
+          <h2 id="more-on-object">More on Object</h2>
+<pre><code class="lang-javascript">//FarScape
+var johnCrichton = {&#39;name&#39;: &quot;John Crichton&quot;, &#39;profession&#39;: &quot;Astronaut&quot;}
+console.log(johnCrichton.name)
+console.log(johnCrichton.species)
+johnCrichton.species = &quot;Human&quot;
+//Alternate attribute lookup
+console.log(johnCrichton[&#39;species&#39;])
+</code></pre>
+<p><code>Objects</code> are just arbitrary key-value pairs. Anything can be a value. <code>Numbers</code> and <code>Strings</code> can be keys. Anything else will be turned into a <code>String</code> when referenced. Only valid identifiers can be dot-accessed though.</p>
+
+        </section>
+        <section>
+          <h2 id="json-notation">JSON Notation</h2>
+<pre><code class="lang-json"> {
+    &quot;key&quot;: &quot;attribute&quot;, &quot;number&quot;: 1,
+    &quot;values&quot;: {
+        1: [2, 3, 4],
+        2: [5, 6, 7]
+    }
+ }
+</code></pre>
+<p> A lighter-than-xml data transport text format for conveying structured data with the common JavaScript Basic Types. Handy for sending objects to and from the server. Use <code>JSON.stringify</code> to serialize, and <code>JSON.parse</code> to deserialize.</p>
+
+        </section>
+        <section>
+          <h2 id="now-for-something-more-serious">Now for something more serious</h2>
+<pre><code class="lang-javascript">/*
+Given some text and a list of phrases,
+return the list which the current text 
+is a good lexical stem for
+*/
+function completePhrase(text, lookUp){
+    var pattern = new RegExp(text, &#39;i&#39;); //Global and ignore case
+    var matches = [];
+    for(var i = 0; i &lt; lookUp.length; i++){
+        var phrase = lookUp[i];
+        if(pattern.test(phrase)){
+            matches.push(phrase);
+        }
+    }
+    return matches;
+}
+</code></pre>
+
+        </section>
+        <section>
+          <h2 id="how-to-include-js-in-a-web-page">How to include JS in a web page</h2>
+<pre><code class="lang-html">&lt;!DOCTYPE html5&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;script src=&#39;path/to/script.js&#39;&gt;&lt;/script&gt;
+    &lt;script&gt;
+    //Script Body Here
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;!-- Page Body Here --&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="including-completephrase-in-a-web-page">Including completePhrase in a web page</h3>
+<pre><code class="lang-html">&lt;!DOCTYPE html5&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;script&gt;
+function completePhrase(text, lookUp){
+    var pattern = new RegExp(text, &#39;i&#39;); //Global and ignore case
+    var matches = [];
+    for(var i = 0; i &lt; lookUp.length; i++){
+        var phrase = lookUp[i];
+        if(pattern.test(phrase)){
+            matches.push(phrase);
+        }
+    }
+    return matches;
+}    
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;!-- Page Body --&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="namespacing">Namespacing</h3>
+<p>JavaScript does not have a built-in namespacing or module system. This will change with ECMAScript 6 later this year. </p>
+<p>There are a few 3rd-party libraries that add sophisticated library loading features today, with distinct philosophies and additional functionalities. Two well known ones:</p>
+<ul>
+<li><a href="http://requirejs.org/">Requre.js</a></li>
+<li><a href="http://browserify.org/">Browserify</a></li>
+</ul>
+
+        </section>
+        <section>
+          <h3 id="namspacing-and-modules">Namspacing and Modules</h3>
+<h4 id="simple-grouping">Simple Grouping</h4>
+<p>You can also roll your own namespacing</p>
+<pre><code class="lang-javascript">var TextUtils = {} //Define an object literal
+TextUtils.completePhrase = function(text, lookUp){
+    var pattern = new RegExp(text, &#39;i&#39;); //Global and ignore case
+    var matches = [];
+    for(var i = 0; i &lt; lookUp.length; i++){
+        var phrase = lookUp[i];
+        if(pattern.test(phrase)){
+            matches.push(phrase);
+        }
+    }
+    return matches;
+}
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="namespacing-and-modules">Namespacing and Modules</h3>
+<h4 id="enclosed-scope">Enclosed Scope</h4>
+<pre><code class="lang-javascript"> TextUtils = (function(){
+     namespace = {}
+     var regexpFlags = &quot;i&quot;
+     namespace.completePhrase = function(text, lookUp){
+         var pattern = new RegExp(text, regexpFlags); //Namspace Local Variable
+         var matches = [];
+         for(var i = 0; i &lt; lookUp.length; i++){
+             var phrase = lookUp[i];
+             if(pattern.test(phrase)){
+                 matches.push(phrase);
+             }
+         }
+         return matches;
+     }
+
+     return namespace
+ })() // Immediately Invoked Function Evalution (IIFE) returns the namespace
+      // which carries all of the exposed public methods
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="remember-the-central-dogma-">Remember the Central Dogma?</h3>
+<pre><code class="lang-javascript">codonTable = { &quot;CTT&quot;: &quot;L&quot;, &quot;ATG&quot;: &quot;M&quot;, &quot;ACA&quot;: &quot;T&quot;, &quot;ACG&quot;: &quot;T&quot;, &quot;ATC&quot;: &quot;I&quot;, &quot;ATA&quot;: &quot;I&quot;, &quot;AGG&quot;: &quot;R&quot;, &quot;CCT&quot;: &quot;P&quot;, &quot;AGC&quot;: &quot;S&quot;, &quot;AGA&quot;: &quot;R&quot;, &quot;ATT&quot;: &quot;I&quot;, &quot;CTG&quot;: &quot;L&quot;, &quot;CTA&quot;: &quot;L&quot;, &quot;ACT&quot;: &quot;T&quot;, &quot;CCG&quot;: &quot;P&quot;, &quot;AGT&quot;: &quot;S&quot;, &quot;CCA&quot;: &quot;P&quot;, &quot;CCC&quot;: &quot;P&quot;, &quot;TAT&quot;: &quot;Y&quot;, &quot;GGT&quot;: &quot;G&quot;, &quot;CGA&quot;: &quot;R&quot;, &quot;CGC&quot;: &quot;R&quot;, &quot;CGG&quot;: &quot;R&quot;, &quot;GGG&quot;: &quot;G&quot;, &quot;GGA&quot;: &quot;G&quot;, &quot;GGC&quot;: &quot;G&quot;, &quot;TAC&quot;: &quot;Y&quot;, &quot;CGT&quot;: &quot;R&quot;, &quot;GTA&quot;: &quot;V&quot;, &quot;GTC&quot;: &quot;V&quot;, &quot;GTG&quot;: &quot;V&quot;, &quot;GAG&quot;: &quot;E&quot;, &quot;GTT&quot;: &quot;V&quot;, &quot;GAC&quot;: &quot;D&quot;, &quot;GAA&quot;: &quot;E&quot;, &quot;AAG&quot;: &quot;K&quot;, &quot;AAA&quot;: &quot;K&quot;, &quot;AAC&quot;: &quot;N&quot;, &quot;CTC&quot;: &quot;L&quot;, &quot;CAT&quot;: &quot;H&quot;, &quot;AAT&quot;: &quot;N&quot;, &quot;CAC&quot;: &quot;H&quot;, &quot;CAA&quot;: &quot;Q&quot;, &quot;CAG&quot;: &quot;Q&quot;, &quot;TGT&quot;: &quot;C&quot;, &quot;TCT&quot;: &quot;S&quot;, &quot;GAT&quot;: &quot;D&quot;, &quot;TTT&quot;: &quot;F&quot;, &quot;TGC&quot;: &quot;C&quot;, &quot;TGG&quot;: &quot;W&quot;, &quot;TTC&quot;: &quot;F&quot;, &quot;TCG&quot;: &quot;S&quot;, &quot;TTA&quot;: &quot;L&quot;, &quot;TTG&quot;: &quot;L&quot;, &quot;TCC&quot;: &quot;S&quot;, &quot;ACC&quot;: &quot;T&quot;, &quot;TCA&quot;: &quot;S&quot;, &quot;GCA&quot;: &quot;A&quot;, &quot;GCC&quot;: &quot;A&quot;, &quot;GCG&quot;: &quot;A&quot;, &quot;GCT&quot;: &quot;A&quot; }
+
+function translate(dna){
+    var protein = []
+    var codons = dna.split(/(...)/);
+    for(var i = 0; i &lt; codons.length; i++){
+        var codon = codons[i];
+        protein.push(codonTable[codon])
+    }
+    return protein.join(&quot;&quot;)
+}
+
+translate(&quot;TCTATTATGCAGAATATTTCTGGTCGTGAGGCTACT&quot;)
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="i-was-promised-functional-programming-">I was promised Functional Programming!</h3>
+<pre><code class="lang-javascript">codonTable = { &quot;CTT&quot;: &quot;L&quot;, &quot;ATG&quot;: &quot;M&quot;, &quot;ACA&quot;: &quot;T&quot;, &quot;ACG&quot;: &quot;T&quot;, &quot;ATC&quot;: &quot;I&quot;, &quot;ATA&quot;: &quot;I&quot;, &quot;AGG&quot;: &quot;R&quot;, &quot;CCT&quot;: &quot;P&quot;, &quot;AGC&quot;: &quot;S&quot;, &quot;AGA&quot;: &quot;R&quot;, &quot;ATT&quot;: &quot;I&quot;, &quot;CTG&quot;: &quot;L&quot;, &quot;CTA&quot;: &quot;L&quot;, &quot;ACT&quot;: &quot;T&quot;, &quot;CCG&quot;: &quot;P&quot;, &quot;AGT&quot;: &quot;S&quot;, &quot;CCA&quot;: &quot;P&quot;, &quot;CCC&quot;: &quot;P&quot;, &quot;TAT&quot;: &quot;Y&quot;, &quot;GGT&quot;: &quot;G&quot;, &quot;CGA&quot;: &quot;R&quot;, &quot;CGC&quot;: &quot;R&quot;, &quot;CGG&quot;: &quot;R&quot;, &quot;GGG&quot;: &quot;G&quot;, &quot;GGA&quot;: &quot;G&quot;, &quot;GGC&quot;: &quot;G&quot;, &quot;TAC&quot;: &quot;Y&quot;, &quot;CGT&quot;: &quot;R&quot;, &quot;GTA&quot;: &quot;V&quot;, &quot;GTC&quot;: &quot;V&quot;, &quot;GTG&quot;: &quot;V&quot;, &quot;GAG&quot;: &quot;E&quot;, &quot;GTT&quot;: &quot;V&quot;, &quot;GAC&quot;: &quot;D&quot;, &quot;GAA&quot;: &quot;E&quot;, &quot;AAG&quot;: &quot;K&quot;, &quot;AAA&quot;: &quot;K&quot;, &quot;AAC&quot;: &quot;N&quot;, &quot;CTC&quot;: &quot;L&quot;, &quot;CAT&quot;: &quot;H&quot;, &quot;AAT&quot;: &quot;N&quot;, &quot;CAC&quot;: &quot;H&quot;, &quot;CAA&quot;: &quot;Q&quot;, &quot;CAG&quot;: &quot;Q&quot;, &quot;TGT&quot;: &quot;C&quot;, &quot;TCT&quot;: &quot;S&quot;, &quot;GAT&quot;: &quot;D&quot;, &quot;TTT&quot;: &quot;F&quot;, &quot;TGC&quot;: &quot;C&quot;, &quot;TGG&quot;: &quot;W&quot;, &quot;TTC&quot;: &quot;F&quot;, &quot;TCG&quot;: &quot;S&quot;, &quot;TTA&quot;: &quot;L&quot;, &quot;TTG&quot;: &quot;L&quot;, &quot;TCC&quot;: &quot;S&quot;, &quot;ACC&quot;: &quot;T&quot;, &quot;TCA&quot;: &quot;S&quot;, &quot;GCA&quot;: &quot;A&quot;, &quot;GCC&quot;: &quot;A&quot;, &quot;GCG&quot;: &quot;A&quot;, &quot;GCT&quot;: &quot;A&quot; }
+
+function ftranslate(dna){
+    return dna.replace(/.../g, function(codon){ return codonTable[codon] })
+}
+
+ftranslate(&quot;TCTATTATGCAGAATATTTCTGGTCGTGAGGCTACT&quot;)
+</code></pre>
+<p>That&#39;s right. Functions are first-class objects, and can be passed around like any other variable.</p>
+
+        </section>
+        <section>
+          <h3 id="more-functional-programming">More Functional Programming</h3>
+<pre><code class="lang-javascript">[1, 2, 3, 4, 5].map(Math.exp)
+[1, 2, 3, 4, 5].map(Math.exp).map(Math.log)
+[1, 2, 3, 4, 5].reduce(function(result, current, previous, all){return current + result})
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="but-there-are-also-objects">But there are also Objects</h3>
+<pre><code class="lang-javascript">typeof 1
+typeof &quot;string&quot;
+typeof [1, 2, 3]
+typeof {&quot;type&quot;: &quot;Object&quot;}
+typeof function(args){console.log(args)}
+</code></pre>
+<p>Yes, Array is an Object, not its own type.</p>
+
+        </section>
+        <section>
+          <h3 id="gotcha-beware-thy-primitive-types">Gotcha - Beware thy primitive types</h3>
+<pre><code class="lang-javascript"> typeof new Number(5)
+ typeof new String(&quot;In a box&quot;)
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="prototypes">Prototypes</h3>
+<p>All JavaScript types have a <code>prototype</code>, an object that defines how they are created. When you create an object with the <code>new</code> operator, you&#39;re creating a new base <code>Object</code> type as a new <em>object</em>, adding the desired type&#39;s <code>prototype</code> to it, and running any constructor logic on the resulting structure.</p>
+<p>A <code>prototype</code> is just an object, so we can slap on new values and they will automatically be available on all objects that share that prototype</p>
+
+        </section>
+        <section>
+          <h3 id="teaching-a-built-in-type-new-tricks">Teaching a built-in type new tricks</h3>
+<pre><code class="lang-javascript">console.log([1, 2, 3, 4, 5].sum === undefined)
+
+Array.prototype.sum = function() {
+    var total = 0;
+    for(var i = 0; i &lt; this.length; i++){
+        total += this[i];
+    }
+    return total
+}
+
+console.log([1, 2, 3, 4, 5].sum())
+</code></pre>
+<p>I had to write a pretty unpleasant looking summation by hand with <code>Array.reduce</code> earlier. If I find I will be doing that often, I would rather write something legible.</p>
+
+        </section>
+        <section>
+          <h3 id="what-is-this-">What is This?</h3>
+<pre><code class="lang-javascript">console.log(this)
+Object.prototype.greet = function() { console.log(this, &quot; says Hello&quot;) }
+{}.greet()
+[].greet()
+</code></pre>
+<p>In the normal, &quot;unbound&quot; context, <code>this</code> refers to the top-level <code>Window</code> object, also referenced by <code>window</code>.</p>
+<p>When evaluating a function bound to an object or its prototype, <code>this</code> refers to the calling object</p>
+<h3 id="binding-a-function">Binding a function</h3>
+<p>You can bind a function to an object without adding it to the prototype by using the <code>Function</code> method <code>bind</code>.</p>
+<pre><code class="lang-javascript">pi = new Number(Math.PI)
+pi.concat = [1, 2, 3, 4].concat.bind(pi)
+pi.concat(5)
+</code></pre>
+<p>Now, <code>pi</code> has a <code>concat</code> function, forever more</p>
+
+        </section>
+        <section>
+          <h3 id="what-if-you-don-t-want-forever-">What if you don&#39;t want forever?</h3>
+<pre><code class="lang-javascript">Math.max.apply(null, [1, 2, Number.MAX_VALUE + 1, 12, Infinity, 12])
+//Note this doesn&#39;t work
+Math.max([1, 2, Number.MAX_VALUE + 1, 12, Infinity, 12])
+//But this does
+Math.max(1, 2, Number.MAX_VALUE + 1, 12, Infinity, 12)
+</code></pre>
+<p><code>Function.apply</code> takes 2+ parameters. The first is the value of <code>this</code> for a single evaluation, and the rest are passed as parameters.</p>
+
+        </section>
+        <section>
+          <h3 id="special-arguments-">Special <code>arguments</code></h3>
+<pre><code class="lang-javascript">debugArgs = function(){
+    console.log(arguments)
+}
+debugArgs(&quot;foo&quot;, &quot;bar&quot;, 1, 2, &quot;baz&quot;, &quot;bzip2&quot;, {&quot;icon&quot;: &quot;32 bit א&quot;})
+</code></pre>
+<p>All arguments passed can be accessed by the special <code>arguments</code> Array-like object, even if there is no name for them listed in the function&#39;s definition.</p>
+<p><code>Math.max</code> and the like take its arguments from this list, and by passing an array to <code>call</code> as the second parameter, that array is used in its place.</p>
+
+        </section>
+        <section>
+          <h3 id="a-better-class-of-string">A better <em>Class</em> of String</h3>
+<pre><code class="lang-javascript">codonTable = { &quot;CTT&quot;: &quot;L&quot;, &quot;ATG&quot;: &quot;M&quot;, &quot;ACA&quot;: &quot;T&quot;, &quot;ACG&quot;: &quot;T&quot;, &quot;ATC&quot;: &quot;I&quot;, &quot;ATA&quot;: &quot;I&quot;, &quot;AGG&quot;: &quot;R&quot;, &quot;CCT&quot;: &quot;P&quot;, &quot;AGC&quot;: &quot;S&quot;, &quot;AGA&quot;: &quot;R&quot;, &quot;ATT&quot;: &quot;I&quot;, &quot;CTG&quot;: &quot;L&quot;, &quot;CTA&quot;: &quot;L&quot;, &quot;ACT&quot;: &quot;T&quot;, &quot;CCG&quot;: &quot;P&quot;, &quot;AGT&quot;: &quot;S&quot;, &quot;CCA&quot;: &quot;P&quot;, &quot;CCC&quot;: &quot;P&quot;, &quot;TAT&quot;: &quot;Y&quot;, &quot;GGT&quot;: &quot;G&quot;, &quot;CGA&quot;: &quot;R&quot;, &quot;CGC&quot;: &quot;R&quot;, &quot;CGG&quot;: &quot;R&quot;, &quot;GGG&quot;: &quot;G&quot;, &quot;GGA&quot;: &quot;G&quot;, &quot;GGC&quot;: &quot;G&quot;, &quot;TAC&quot;: &quot;Y&quot;, &quot;CGT&quot;: &quot;R&quot;, &quot;GTA&quot;: &quot;V&quot;, &quot;GTC&quot;: &quot;V&quot;, &quot;GTG&quot;: &quot;V&quot;, &quot;GAG&quot;: &quot;E&quot;, &quot;GTT&quot;: &quot;V&quot;, &quot;GAC&quot;: &quot;D&quot;, &quot;GAA&quot;: &quot;E&quot;, &quot;AAG&quot;: &quot;K&quot;, &quot;AAA&quot;: &quot;K&quot;, &quot;AAC&quot;: &quot;N&quot;, &quot;CTC&quot;: &quot;L&quot;, &quot;CAT&quot;: &quot;H&quot;, &quot;AAT&quot;: &quot;N&quot;, &quot;CAC&quot;: &quot;H&quot;, &quot;CAA&quot;: &quot;Q&quot;, &quot;CAG&quot;: &quot;Q&quot;, &quot;TGT&quot;: &quot;C&quot;, &quot;TCT&quot;: &quot;S&quot;, &quot;GAT&quot;: &quot;D&quot;, &quot;TTT&quot;: &quot;F&quot;, &quot;TGC&quot;: &quot;C&quot;, &quot;TGG&quot;: &quot;W&quot;, &quot;TTC&quot;: &quot;F&quot;, &quot;TCG&quot;: &quot;S&quot;, &quot;TTA&quot;: &quot;L&quot;, &quot;TTG&quot;: &quot;L&quot;, &quot;TCC&quot;: &quot;S&quot;, &quot;ACC&quot;: &quot;T&quot;, &quot;TCA&quot;: &quot;S&quot;, &quot;GCA&quot;: &quot;A&quot;, &quot;GCC&quot;: &quot;A&quot;, &quot;GCG&quot;: &quot;A&quot;, &quot;GCT&quot;: &quot;A&quot; }
+
+DNASequence = function(sequence){
+    this.sequence = sequence
+    this.translate = function(){
+        return this.sequence.replace(/.../g, function(codon){ return codonTable[codon] })
+    }
+}
+DNASequence.prototype.toString = function(){
+    return &quot;{Sequence &quot; + this.sequence + &quot;}&quot;
+}
+
+dna = new DNASequence(&quot;TCTATTATGCAGAATATTTCTGGTCGTGAGGCTACT&quot;)
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="hereditary-traits">Hereditary Traits</h3>
+<pre><code class="lang-javascript">RNASequence = function(sequence){
+    DNASequence.call(this, sequence)
+    this.translate = undefined;
+}
+RNASequence.reverseTranscribe = function(dnaSequence){
+    seq = dnaSequence.sequence.split(&quot;&quot;).reverse().join(&quot;&quot;).replace(&quot;T&quot;, &quot;U&quot;)
+    return new RNASequence(seq)
+}
+
+rna = RNASequence.reverseTranscribe(dna)
+console.log(rna.reverseTranscribe, rna.translate)
+</code></pre>
+<p>Here, traits are passed on by the constructor.</p>
+
+        </section>
+        <section>
+          <h3 id="prototype-as-template">Prototype as Template</h3>
+<pre><code class="lang-javascript">ProteinSequence = function(sequence){
+    this.sequence = sequence
+}
+ProteinSequence.prototype = Object.create(DNASequence.prototype)
+protein = new ProteinSequence(&quot;SIMQNISGREAT&quot;)
+protein.toString()
+console.log(protein.translate)
+</code></pre>
+<p>Here, traits are passed on by the prototype.</p>
+
+        </section>
+        <section>
+          <h3 id="javascript-standard-library-resources">JavaScript Standard Library Resources</h3>
+<p>[The Mozilla Developers Network Javascript Reference]
+[W3C Schools JavaScript Reference]</p>
+
+        </section>
+
+    </div>
+  </div>
+
+  <!-- build:scripts -->
+  <script id="reveal-core" src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.0.0/js/reveal.js" type="text/javascript" charset="utf-8"></script>
+  <script id="reveal-init" type="text/javascript" charset="utf-8">
+    Reveal.initialize({
+      autoSlide: 0,
+      autoSlideStoppable: true,
+      backgroundTransition: 'default',
+      center: true,
+      controls: true,
+      embedded: false,
+      fragments: true,
+      help: true,
+      hideAddressBar: true,
+      history: false,
+      keyboard: true,
+      loop: false,
+      mouseWheel: false,
+      overview: true,
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      previewLinks: false,
+      progress: true,
+      rtl: false,
+      slideNumber: true,
+      touch: true,
+      transition: 'default',
+      transitionSpeed: 'default',
+      viewDistance: 3
+    });
+  </script>
+  <!-- endbuild -->
+</body>
+</html>

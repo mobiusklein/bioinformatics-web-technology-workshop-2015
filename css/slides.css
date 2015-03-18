@@ -1,0 +1,7 @@
+:not(pre) code {
+    color: navy;
+}
+
+.de-emphasis {
+    font-size: smaller !important;
+}
