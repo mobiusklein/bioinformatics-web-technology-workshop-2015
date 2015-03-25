@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src='https://code.jquery.com/jquery-2.1.3.min.js'></script> 
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+
+    <title></title>
+    <script>
+    $(function(){
+        $("#options").change(function(){
+            loadData(this.value)
+        })
+        loadData($("#options").children()[0].value)
+    })
+    function loadData(name){
+        var gene = DataStore[name]
+        var container = $("#contents")
+        container.find("#header h3").html(gene.geneName)
+        container.find("#header i").html(gene.symbol)
+        container.find("#organism").html(gene.organism)
+        container.find("#summary").html(gene.summary)
+    }
+    var DataStore = {
+        "TP53": {
+            "symbol": "TP53",
+            "geneName": "tumor protein p53 ",
+            "organism": "Human",
+            "summary": "This gene encodes a tumor suppressor protein containing transcriptional activation, DNA binding, and oligomerization domains. The encoded protein responds to diverse cellular stresses to regulate expression of target genes, thereby inducing cell cycle arrest, apoptosis, senescence, DNA repair, or changes in metabolism. Mutations in this gene are associated with a variety of human cancers, including hereditary cancers such as Li-Fraumeni syndrome. Alternative splicing of this gene and the use of alternate promoters result in multiple transcript variants and isoforms. Additional isoforms have also been shown to result from the use of alternate translation initiation codons."
+        },
+        "APOE": {
+            "symbol": "APOE",
+            "geneName": "apolipoprotein E",
+            "organism": "Human",
+            "summary": "The protein encoded by this gene is a major apoprotein of the chylomicron. It binds to a specific liver and peripheral cell receptor, and is essential for the normal catabolism of triglyceride-rich lipoprotein constituents. This gene maps to chromosome 19 in a cluster with the related apolipoprotein C1 and C2 genes. Mutations in this gene result in familial dysbetalipoproteinemia, or type III hyperlipoproteinemia (HLP III), in which increased plasma cholesterol and triglycerides are the consequence of impaired clearance of chylomicron and VLDL remnants. Alternative splicing results in multiple transcript variants."
+        },
+        "SLC6A4": {
+            "symbol": "SLC6A4",
+            "geneName": "solute carrier family 6 (neurotransmitter transporter), member 4",
+            "organism": "Human",
+            "summary": "This gene encodes an integral membrane protein that transports the neurotransmitter serotonin from synaptic spaces into presynaptic neurons. The encoded protein terminates the action of serotonin and recycles it in a sodium-dependent manner. This protein is a target of psychomotor stimulants, such as amphetamines and cocaine, and is a member of the sodium:neurotransmitter symporter family. A repeat length polymorphism in the promoter of this gene has been shown to affect the rate of serotonin uptake and may play a role in sudden infant death syndrome, aggressive behavior in Alzheimer disease patients, and depression-susceptibility in people experiencing emotional trauma."
+        }
+    }
+    </script>
+</head>
+<body class='container'>
+<h2>Protein Annotations</h2>
+<select id='options'>
+    <option value="TP53">TP53</option>
+    <option value="APOE">APOE</option>
+    <option value="SLC6A4">SLC6A4</option>
+</select>
+<div id='contents'>
+    <header id="header" >
+        <h3></h3>
+        Symbol: <i></i>
+    </header>
+    <br>
+    <div id='organism'></div>
+    <div id='summary'>
+        
+    </div>
+</div>
+</body>
+</html>

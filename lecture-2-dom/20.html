@@ -1,0 +1,139 @@
+<!DOCTYPE html5>
+<html>
+<head>
+    <title>Drug Listing</title>
+    <script src='https://code.jquery.com/jquery-2.1.3.min.js'></script>
+    <script src="drug_array.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <style type="text/css">
+#drug-list{
+    float: left;
+    border: 1px solid grey;
+    border-radius: 3px;
+    padding: 5px;
+    width: 30%;
+    height: 800px;
+    overflow-y: scroll;
+}
+
+#drug-list a{
+    cursor: pointer;
+    display: block;
+    padding: 2px;
+}
+
+#entry-contents{
+    float: left;
+    border: 1px solid grey;
+    border-radius: 3px;
+    padding: 5px;
+    width: 70%;
+    height: 800px;
+}
+
+.float-box{
+    float: left;
+    padding: 10px;
+}
+
+.outer-box{
+    clear: both;
+}
+
+    </style>
+    <script>
+
+$(function(){
+    renderList(DrugSource)
+    renderEntry(DrugSource[0])
+})
+
+/*
+Translate an Entry object into content in #entry-contents
+*/
+function renderEntry(entry){
+    var container = $("#entry-contents")
+    var name = entry.Name
+    var links = {}
+    var ids = {}
+    var keys = Object.keys(entry)
+    var linkPattern = /(.*)\sLink/
+    var idPattern = /(.*)\sID/i
+    for(var i = 0; i < keys.length; i++){
+        var key = keys[i]
+        if(linkPattern.test(key)){
+            var sourceName = linkPattern.exec(key)[1]
+            links[sourceName] = entry[key]
+        } 
+        else if(idPattern.test(key)){
+            var sourceName = idPattern.exec(key)[1]
+            ids[sourceName] = entry[key]
+        }
+    }
+    container.find('#drug-name').text(name)
+    var linkContainer = container.find("#link-box")
+    linkContainer.html("<h4>Links</h4>")
+    var linkNames = Object.keys(links)
+    for(var i = 0; i < linkNames.length; i++){
+        var linkName = linkNames[i]
+        var linkURL = links[linkName]
+        var linkTag = $("<a></a>").attr("href", linkURL).text(linkName).attr("target", "_blank")
+        linkContainer.append($("<div></div>").append(linkTag))
+    }
+
+
+    var idContainer = container.find("#id-box")
+    idContainer.html("<h4>External IDs</h4>")
+    var idNames = Object.keys(ids)
+    for(var i = 0; i < idNames.length; i++){
+        var idName = idNames[i]
+        var idString = ids[idName]
+        if(idString === ""){
+            continue
+        }
+        var idTag = $("<div></div>").text(idName + ": " + idString)
+        idContainer.append(idTag)
+    }
+}
+
+/*
+Convert the list of Entry objects into a clickable list in #drug-list
+*/
+function renderList(listEntries){
+    var container = $("#drug-list")
+    var accumulator = []
+    for(var i = 0; i < listEntries.length; i++){
+        var entry = listEntries[i];
+        var entryElement = $("<a></a>")
+        entryElement.text(entry.Name)
+        entryElement.data("entry", entry)
+        
+        entryElement.click(function(){
+            var clicked = $(this).data('entry')
+            renderEntry(clicked)
+        })
+
+        accumulator.push(entryElement)
+    }
+    container.append(accumulator)
+}
+    </script>
+</head>
+<body class='container'>
+<h2>Drug Listing</h2>
+<div id='drug-list'>
+    
+</div>
+<div id='entry-contents'>
+    <h3 id='drug-name'></h3>
+    <div class='outer-box'>
+        <div id='link-box' class='float-box'>
+            
+        </div>
+        <div id='id-box' class='float-box'>
+            
+        </div>
+    </div>
+</div>
+</body>
+</html>

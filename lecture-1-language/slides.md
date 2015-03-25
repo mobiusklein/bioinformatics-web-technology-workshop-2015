@@ -4,6 +4,7 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/monokai_sublime.min.css">
 <link rel="stylesheet" type="text/css" href="../css/slides.css">
 <script src='../js/slides.js'></script>
+<script>runDemo = runDemoBlock</script>
 ## JavaScript and Web Technology Workshop
 ##### Joshua Klein 
 

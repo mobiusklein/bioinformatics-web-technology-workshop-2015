@@ -1,0 +1,30 @@
+<!DOCTYPE html5> <!-- Treat this as an HTML5 document  -->
+<html> <!-- Top level tag -->
+<head> <!-- Head tag contains most non-visual tags -->
+    <title>Page Title</title>
+    <script type="text/javascript">
+    function appLogic(){ alert("Ping " + this + "!"); }
+    </script>
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+</head>
+<body onload="initPage()">
+<h2 id='page-header'>Page Header</h2>
+<p class='content' onclick="appLogic()"> Things in this paragraph </p>
+<p class='content'> Things in another paragraph </p>
+<div> Footer </div>
+</body>
+<script>
+function initPage(){
+    var header = document.getElementById("page-header")
+    console.log(header)
+    header.addEventListener("mouseover", function(){(this.innerHTML = "Mouse over!")})
+    header.addEventListener("mouseout", function(){(this.innerHTML = "Mouse out!")})
+
+}
+document.onreadystatechange = function(){
+    if(document.readyState == "complete"){
+        initPage();
+    }
+}
+</script>
+</html>

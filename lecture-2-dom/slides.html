@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=1024, user-scalable=no">
+
+  <title>Just Another Bedecked Presentation</title>
+
+  <link id="reveal-core" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.0.0/css/reveal.min.css">
+  <link id="reveal-theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.0.0/css/theme/simple.css">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+        <section>
+          <p><script src='https://code.jquery.com/jquery-2.1.3.min.js'></script></p>
+<p><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js" type="text/javascript" charset="utf-8"></script></p>
+<p><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/languages/javascript.min.js" type="text/javascript" charset="utf-8"></script></p>
+<p><link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/monokai_sublime.min.css"></p>
+<p><link rel="stylesheet" type="text/css" href="../css/slides.css"></p>
+<p><script src='../js/slides.js'></script></p>
+<p><script>runDemo=DOMDemo</script></p>
+<h2 id="javascript-and-web-technology-workshop">JavaScript and Web Technology Workshop</h2>
+<h5 id="joshua-klein">Joshua Klein</h5>
+
+        </section>
+        <section>
+          <h3 id="lecture-2-html-and-the-dom">Lecture 2 - HTML and the DOM</h3>
+
+        </section>
+        <section>
+          <h3 id="what-does-a-web-page-look-like-">What does a web page look like?</h3>
+<p>A web page is an XML file</p>
+<pre><code class="lang-html">&lt;!DOCTYPE html5&gt; &lt;!-- Treat this as an HTML5 document  --&gt;
+&lt;html&gt; &lt;!-- Top level tag --&gt;
+&lt;head&gt; &lt;!-- Head tag contains most non-visual tags --&gt;
+    &lt;title&gt;Page Title&lt;/title&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+    var appData;
+    function appLogic(){ console.log(&quot;Ping!&quot;); }
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2 id=&#39;page-header&#39;&gt;Page Header&lt;/h2&gt;
+&lt;p class=&#39;content&#39;&gt; Things in this paragraph &lt;/p&gt;
+&lt;p class=&#39;content&#39;&gt; Things in another paragraph &lt;/p&gt;
+&lt;div&gt; Footer &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="what-is-the-dom-">What is the DOM?</h3>
+<p><strong>D</strong>ocument <strong>O</strong>bject <strong>M</strong>odel
+The computational representation of a web page. Want to operate on a part of the web page? You need to find it first!</p>
+<pre><code class="lang-javascript">var htmlCollection = document.getElementsByTagName(&quot;div&quot;)
+var htmlCollection = document.getElementsByClassName(&quot;content&quot;)
+var singleTag = document.getElementById(&quot;page-header&quot;)
+</code></pre>
+<p><code>htmlCollection</code> is an array of <code>DOM objects</code>, while <code>singleTag</code> is just one DOM object. <code>DOM objects</code> are just JavaScript wrappers around the host&#39;s representation of that rendered content. You change the properties of the page by modifying <code>DOM objects</code>.</p>
+
+        </section>
+        <section>
+          <h3 id="changing-text-and-color">Changing Text and Color</h3>
+<pre><code class="lang-javascript">var headerTag = document.getElementById(&quot;page-header&quot;)
+headerTag.style.color = &quot;red&quot;
+var footerDiv = document.getElementsByTagName(&quot;div&quot;)[0]
+footerDiv.innerHTML = &quot;&lt;p&gt;Now a paragraph&lt;/p&gt;&quot;
+</code></pre>
+<p>The built-in DOM API for changing style options that are settable by CSS use <em>camelCase</em> names instead of <em>kebab-case</em>.</p>
+
+        </section>
+        <section>
+          <h3 id="adding-new-tag-trees-programmatically">Adding New Tag Trees Programmatically</h3>
+<pre><code class="lang-javascript">var contentTags = document.getElementsByClassName(&quot;content&quot;);
+for(var i = 0; i &lt; contentTags.length; i++){
+    var tag = contentTags[i]
+    var newContent = document.createElement(&quot;p&quot;)
+    newContent.textContent = &quot;I&#39;m content at position &quot; + i;
+    tag.appendChild(newContent)
+}
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="textcontent-vs-innerhtml">textContent vs. innerHTML</h3>
+<p><code>textContent</code> is for writing plain text. It will automatically escape markup passed through it. <code>innerHTML</code> will parse markup and render it within the containing node.</p>
+
+        </section>
+        <section>
+          <h3 id="adding-actions-and-reactions">Adding Actions and Reactions</h3>
+<p>Most websites we visit are highly interactive, with things to click, hover over, and act on. Let&#39;s add that to our example.</p>
+<pre><code class="lang-html">&lt;!DOCTYPE html5&gt; &lt;!-- Treat this as an HTML5 document  --&gt;
+&lt;html&gt; &lt;!-- Top level tag --&gt;
+&lt;head&gt; &lt;!-- Head tag contains most non-visual tags --&gt;
+    &lt;title&gt;Page Title&lt;/title&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+    function appLogic(){ alert(&quot;Ping &quot; + this + &quot;!&quot;); }
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2 id=&#39;page-header&#39;&gt;Page Header&lt;/h2&gt;
+&lt;p class=&#39;content&#39; onclick=&quot;appLogic()&quot;&gt; Things in this paragraph &lt;/p&gt;
+&lt;p class=&#39;content&#39;&gt; Things in another paragraph &lt;/p&gt;
+&lt;div&gt; Footer &lt;/div&gt;
+&lt;/body&gt;
+&lt;script&gt;
+function initPage(){
+    var header = document.getElementById(&quot;page-header&quot;)
+    console.log(header)
+    header.addEventListener(&quot;mouseover&quot;, function(){(this.innerHTML = &quot;Mouse over!&quot;)})
+    header.addEventListener(&quot;mouseout&quot;, function(){(this.innerHTML = &quot;Mouse out!&quot;)})
+}
+document.onreadystatechange = function(){
+    if(document.readyState == &quot;complete&quot;){
+        initPage();
+    }
+}
+&lt;/script&gt;
+&lt;/html&gt;
+</code></pre>
+<p><a href="7.html" target='_blank'>Demo</a></p>
+
+        </section>
+        <section>
+          <h3 id="functional-programming-the-revenge-of">Functional Programming, The Revenge Of</h3>
+<p>Notice how event handlers are passed functions. They can be functions declared with names, or anonymous functions declared on the spot.</p>
+
+        </section>
+        <section>
+          <h3 id="why-do-onreadystatechange-">Why do <code>onreadystatechange</code>?</h3>
+<p>Often, the DOM isn&#39;t fully parsed and ready to be acted on with JavaScript when the script would be parsed and executed. </p>
+<p> The <code>Window</code> and/or <code>Document</code> objects will dispatch events for when the DOM are ready to be used.</p>
+<p><small class='fragment'>Yes, and/or. There are many different ways to check, each being slightly different and only available in some browsers. Seems like an aweful lot of stuff to check if you want to support older browsers.</small></p>
+
+        </section>
+        <section>
+          <h3 id="jquery-the-unifying-api">jQuery, the unifying API</h3>
+<p><code>jQuery</code> is a library that provides many, many cross-browser, backwards compatible functions for event handling DOM manipulation, iterator functions, <code>AJAX</code>, and more.</p>
+<p>Instead of handling each individual browser ourselves, let&#39;s use jQuery.</p>
+
+        </section>
+        <section>
+          <h3 id="convenience-dispatch-function">Convenience Dispatch Function</h3>
+<pre><code class="lang-javascript">//jQuery assumes control over $ for convenience
+jQuery === $
+//Passing a function assigns it to the page&#39;s onready handler
+jQuery(function(){/*...*/})
+//Query the DOM, wrapping it in a convenience object
+$(&quot;.css-selector #string&quot;)
+//Create a new DOM object detached from the DOM
+$(&quot;&lt;div&gt;&lt;/div&gt;&quot;)
+//Wraps an existing DOM object in the same type of convenience object
+$(document.getElementById(&quot;string&quot;))
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="querying-the-dom-by-css-selector">Querying the DOM by CSS Selector</h3>
+<p>Where we had three (or more) functions available through <code>document</code> for querying the <code>DOM</code>, <code>jQuery</code> uses just one, the behavior of <code>$()</code> when passed a string or <code>DOM</code> object.</p>
+<p><code>$(&quot;...&quot;)</code> selects elements from the <code>DOM</code> with CSS Selector syntax, the same scheme used by style sheets. This is a succinct way to fetch one or more elements</p>
+<pre><code class="lang-css">.class-name
+#id-name
+tag-name
+[attribute-name=&quot;value&quot;]
+.class-name tag-name #chain
+//
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="dom-wrapper-conveniences">DOM Wrapper Conveniences</h3>
+<pre><code class="lang-javascript">tag = $(&quot;.css-selector&quot;)
+tag.html()   //Get or set HTML content
+tag.text()   //Get or set Text content
+tag.css({})  //Get or set element&#39;s inline CSS style
+tag.attr({}) //Get or set element&#39;s attributes ()
+tag.data({}) //Associate application data with element
+</code></pre>
+<p>Functions with <code>{}</code> arguments can be parameterized with a key-value pair of arguments, or passed a single <code>Object</code> to set multiple values at once</p>
+
+        </section>
+        <section>
+          <h3 id="one-more-time-with-jquery">One more time, with jQuery</h3>
+<pre><code class="lang-html">&lt;!DOCTYPE html5&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Page Title&lt;/title&gt;
+    &lt;!-- Include jQuery Script --&gt;
+    &lt;script src=&#39;https://code.jquery.com/jquery-2.1.3.min.js&#39;&gt;&lt;/script&gt; 
+    &lt;script type=&quot;text/javascript&quot;&gt;
+    $(function(){ //jQuery assigns itself to the variables &quot;$&quot; and &quot;jQuery&quot;
+        $(&quot;#page-header&quot;).mouseover(function(){$(this).html(&quot;Mouseover!&quot;)})
+        .mouseout(function(){$(this).html(&quot;Mouseout!&quot;)})
+    })
+    appLogic = function(){alert(&quot;Ping!&quot;)}
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h2 id=&#39;page-header&#39;&gt;Page Header&lt;/h2&gt;
+&lt;p class=&#39;content&#39; onclick=&quot;appLogic()&quot;&gt; Things in this paragraph &lt;/p&gt;
+&lt;p class=&#39;content&#39;&gt; Things in another paragraph &lt;/p&gt;
+&lt;div&gt; Footer &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><a href="9.html" target='_blank'>Demo</a></p>
+
+        </section>
+        <section>
+          <h3 id="binding-and-this-">Binding and <code>this</code></h3>
+<p>Did you notice the inline call to <code>appLogic</code>&#39;s reference to <code>this</code> referred to <code>Window</code> while the event handler attached by jQuery and <code>addEventListener</code> bound <code>this</code> to the DOM element the event was caused by?</p>
+
+        </section>
+        <section>
+          <h3 id="less-typing-through-chaining">Less typing through chaining</h3>
+<pre><code class="lang-javascript">$(&quot;#page-header&quot;).mouseover(function(){$(this).html(&quot;Mouseover!&quot;)})
+        .mouseout(function(){$(this).html(&quot;Mouseout!&quot;)})
+</code></pre>
+<p>We&#39;re selecting the element with id <code>page-header</code> first, returning a <code>DOM</code> element wrapped by <code>jQuery</code>, then binding a function to its <code>mouseover</code> event handler. This binding function call <em>returns</em> the <code>DOM</code> object wrapped by <code>jQuery</code>, and then binding another function to the element&#39;s <code>mouseout</code> event handler.</p>
+
+        </section>
+        <section>
+          <h3 id="now-let-s-be-serious-again">Now, let&#39;s be serious again</h3>
+<pre><code class="lang-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;script src=&#39;https://code.jquery.com/jquery-2.1.3.min.js&#39;&gt;&lt;/script&gt; 
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../css/bootstrap.min.css&quot;&gt;
+
+    &lt;title&gt;&lt;/title&gt;
+    &lt;script&gt;
+    $(function(){
+        $(&quot;#options&quot;).change(function(){
+            loadData(this.value)
+        })
+        loadData($(&quot;#options&quot;).children()[0].value)
+    })
+    function loadData(name){
+        var gene = DataStore[name]
+        var container = $(&quot;#contents&quot;)
+        container.find(&quot;#header h3&quot;).html(gene.geneName)
+        container.find(&quot;#header i&quot;).html(gene.symbol)
+        container.find(&quot;#organism&quot;).html(gene.organism)
+        container.find(&quot;#summary&quot;).html(gene.summary)
+    }
+    var DataStore = {
+        &quot;TP53&quot;: {
+            &quot;symbol&quot;: &quot;TP53&quot;,
+            &quot;geneName&quot;: &quot;tumor protein p53 &quot;,
+            &quot;organism&quot;: &quot;Human&quot;,
+            &quot;summary&quot;: &quot;This gene encodes a tumor suppressor protein containing transcriptional activation, DNA binding, and oligomerization domains. The encoded protein responds to diverse cellular stresses to regulate expression of target genes, thereby inducing cell cycle arrest, apoptosis, senescence, DNA repair, or changes in metabolism. Mutations in this gene are associated with a variety of human cancers, including hereditary cancers such as Li-Fraumeni syndrome. Alternative splicing of this gene and the use of alternate promoters result in multiple transcript variants and isoforms. Additional isoforms have also been shown to result from the use of alternate translation initiation codons.&quot;
+        },
+        &quot;APOE&quot;: {
+            &quot;symbol&quot;: &quot;APOE&quot;,
+            &quot;geneName&quot;: &quot;apolipoprotein E&quot;,
+            &quot;organism&quot;: &quot;Human&quot;,
+            &quot;summary&quot;: &quot;The protein encoded by this gene is a major apoprotein of the chylomicron. It binds to a specific liver and peripheral cell receptor, and is essential for the normal catabolism of triglyceride-rich lipoprotein constituents. This gene maps to chromosome 19 in a cluster with the related apolipoprotein C1 and C2 genes. Mutations in this gene result in familial dysbetalipoproteinemia, or type III hyperlipoproteinemia (HLP III), in which increased plasma cholesterol and triglycerides are the consequence of impaired clearance of chylomicron and VLDL remnants. Alternative splicing results in multiple transcript variants.&quot;
+        },
+        &quot;SLC6A4&quot;: {
+            &quot;symbol&quot;: &quot;SLC6A4&quot;,
+            &quot;geneName&quot;: &quot;solute carrier family 6 (neurotransmitter transporter), member 4&quot;,
+            &quot;organism&quot;: &quot;Human&quot;,
+            &quot;summary&quot;: &quot;This gene encodes an integral membrane protein that transports the neurotransmitter serotonin from synaptic spaces into presynaptic neurons. The encoded protein terminates the action of serotonin and recycles it in a sodium-dependent manner. This protein is a target of psychomotor stimulants, such as amphetamines and cocaine, and is a member of the sodium:neurotransmitter symporter family. A repeat length polymorphism in the promoter of this gene has been shown to affect the rate of serotonin uptake and may play a role in sudden infant death syndrome, aggressive behavior in Alzheimer disease patients, and depression-susceptibility in people experiencing emotional trauma.&quot;
+        }
+    }
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body class=&#39;container&#39;&gt;
+&lt;h2&gt;Protein Annotations&lt;/h2&gt;
+&lt;select id=&#39;options&#39;&gt;
+    &lt;option value=&quot;TP53&quot;&gt;TP53&lt;/option&gt;
+    &lt;option value=&quot;APOE&quot;&gt;APOE&lt;/option&gt;
+    &lt;option value=&quot;SLC6A4&quot;&gt;SLC6A4&lt;/option&gt;
+&lt;/select&gt;
+&lt;div id=&#39;contents&#39;&gt;
+    &lt;header id=&quot;header&quot; &gt;
+        &lt;h3&gt;&lt;/h3&gt;
+        Symbol: &lt;i&gt;&lt;/i&gt;
+    &lt;/header&gt;
+    &lt;br&gt;
+    &lt;div id=&#39;organism&#39;&gt;&lt;/div&gt;
+    &lt;div id=&#39;summary&#39;&gt;
+
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><a href="13.html" target='_blank'>Demo</a></p>
+
+        </section>
+        <section>
+          <h3 id="taking-a-closer-look">Taking a closer look</h3>
+<pre><code class="lang-javascript">function loadData(name){
+    var gene = DataStore[name]
+    //Find the id=content tag
+    var container = $(&quot;#contents&quot;)
+    //Find h3 under id=header under id=contents and set HTML conents
+    container.find(&quot;#header h3&quot;).html(gene.geneName)
+    //Find i under id=header under id=contents and set HTML conents
+    container.find(&quot;#header i&quot;).html(gene.symbol)
+    //Find id=organism under id=contents and set HTML conents
+    container.find(&quot;#organism&quot;).html(gene.organism)
+    //Find id=summary under id=contents and set HTML conents
+    container.find(&quot;#summary&quot;).html(gene.summary)
+}
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="on-ready-function">On-Ready Function</h3>
+<pre><code class="lang-javascript">$(function(){
+        $(&quot;#options&quot;).change(function(){
+            loadData(this.value)
+        })
+        loadData($(&quot;#options&quot;).children()[0].value)
+})
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="adding-more-dynamic-content">Adding more dynamic content</h3>
+<pre><code class="lang-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;script src=&#39;https://code.jquery.com/jquery-2.1.3.min.js&#39;&gt;&lt;/script&gt; 
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../css/bootstrap.min.css&quot;&gt;
+    &lt;script&gt;
+    $(function(){
+        $(&quot;#options&quot;).change(function(){
+            loadData(this.value)
+        })
+        var geneSymbols = Object.keys(DataStore)
+        for(var i = 0; i &lt; geneSymbols.length; i++){
+            var gene = geneSymbols[i]
+            $(&quot;#options&quot;).append($(&quot;&lt;option&gt;&lt;/option&gt;&quot;).attr(&quot;value&quot;, gene).text(gene))
+        }
+        loadData($(&quot;#options&quot;).children()[0].value)
+    })
+    function loadData(name){
+        var gene = DataStore[name]
+        var container = $(&quot;#contents&quot;)
+        container.find(&quot;#header h3&quot;).html(gene.geneName)
+        container.find(&quot;#header i&quot;).html(gene.symbol)
+        container.find(&quot;#organism&quot;).html(gene.organism)
+        container.find(&quot;#summary&quot;).html(gene.summary)
+    }
+    var DataStore = {
+        &quot;TP53&quot;: {
+            &quot;symbol&quot;: &quot;TP53&quot;,
+            &quot;geneName&quot;: &quot;tumor protein p53 &quot;,
+            &quot;organism&quot;: &quot;Human&quot;,
+            &quot;summary&quot;: &quot;This gene encodes a tumor suppressor protein containing transcriptional activation, DNA binding, and oligomerization domains. The encoded protein responds to diverse cellular stresses to regulate expression of target genes, thereby inducing cell cycle arrest, apoptosis, senescence, DNA repair, or changes in metabolism. Mutations in this gene are associated with a variety of human cancers, including hereditary cancers such as Li-Fraumeni syndrome. Alternative splicing of this gene and the use of alternate promoters result in multiple transcript variants and isoforms. Additional isoforms have also been shown to result from the use of alternate translation initiation codons.&quot;
+        },
+        &quot;APOE&quot;: {
+            &quot;symbol&quot;: &quot;APOE&quot;,
+            &quot;geneName&quot;: &quot;apolipoprotein E&quot;,
+            &quot;organism&quot;: &quot;Human&quot;,
+            &quot;summary&quot;: &quot;The protein encoded by this gene is a major apoprotein of the chylomicron. It binds to a specific liver and peripheral cell receptor, and is essential for the normal catabolism of triglyceride-rich lipoprotein constituents. This gene maps to chromosome 19 in a cluster with the related apolipoprotein C1 and C2 genes. Mutations in this gene result in familial dysbetalipoproteinemia, or type III hyperlipoproteinemia (HLP III), in which increased plasma cholesterol and triglycerides are the consequence of impaired clearance of chylomicron and VLDL remnants. Alternative splicing results in multiple transcript variants.&quot;
+        },
+        &quot;SLC6A4&quot;: {
+            &quot;symbol&quot;: &quot;SLC6A4&quot;,
+            &quot;geneName&quot;: &quot;solute carrier family 6 (neurotransmitter transporter), member 4&quot;,
+            &quot;organism&quot;: &quot;Human&quot;,
+            &quot;summary&quot;: &quot;This gene encodes an integral membrane protein that transports the neurotransmitter serotonin from synaptic spaces into presynaptic neurons. The encoded protein terminates the action of serotonin and recycles it in a sodium-dependent manner. This protein is a target of psychomotor stimulants, such as amphetamines and cocaine, and is a member of the sodium:neurotransmitter symporter family. A repeat length polymorphism in the promoter of this gene has been shown to affect the rate of serotonin uptake and may play a role in sudden infant death syndrome, aggressive behavior in Alzheimer disease patients, and depression-susceptibility in people experiencing emotional trauma.&quot;
+        }
+    }
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body class=&#39;container&#39;&gt;
+&lt;h2&gt;Protein Annotations&lt;/h2&gt;
+&lt;select id=&#39;options&#39;&gt;
+&lt;/select&gt;
+&lt;div id=&#39;contents&#39;&gt;
+    &lt;header id=&quot;header&quot; &gt;
+        &lt;h3&gt;&lt;/h3&gt;
+        Symbol: &lt;i&gt;&lt;/i&gt;
+    &lt;/header&gt;
+    &lt;br&gt;
+    &lt;div id=&#39;organism&#39;&gt;&lt;/div&gt;
+    &lt;div id=&#39;summary&#39;&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><a href="14.html" target='_blank'>Demo</a></p>
+
+        </section>
+        <section>
+          <h3 id="building-a-dynamic-list">Building a dynamic list</h3>
+<pre><code class="lang-javascript">//On-Ready Function
+$(function(){
+    //Setting up the change event handler
+    $(&quot;#options&quot;).change(function(){
+        loadData(this.value) // Notice the presence of `this`
+    })
+    //Get the list of keys of DataStore
+    var geneSymbols = Object.keys(DataStore)
+    //For each gene in the data
+    for(var i = 0; i &lt; geneSymbols.length; i++){
+        var gene = geneSymbols[i]
+        /*
+         * Create &lt;option&gt;&lt;/option&gt; tag, set it&#39;s &quot;value&quot; attribute to the 
+         * value of the current gene symbol, and the text to the same value
+         */
+        $(&quot;#options&quot;).append($(&quot;&lt;option&gt;&lt;/option&gt;&quot;).attr(&quot;value&quot;, gene).text(gene))
+    }
+    //Load the first entry
+    loadData($(&quot;#options&quot;).children()[0].value)
+})
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="another-example">Another Example</h3>
+<p>This example is too big to place in a slide. Open the Demo below:</p>
+<p><a href="20.html" target='_blank'>Demo</a></p>
+
+        </section>
+        <section>
+          <h3 id="what-does-the-data-look-like-">What does the data look like?</h3>
+<pre><code class="lang-json">{
+    &quot;CAS Number&quot;: &quot;83712-60-1&quot;,
+    &quot;ChEBI ID&quot;: &quot;&quot;,
+    &quot;RxList Link&quot;: &quot;&quot;,
+    &quot;Drug Type&quot;: &quot;BiotechDrug&quot;,
+    &quot;BindingDB ID&quot;: &quot;&quot;,
+    &quot;PubChem Substance ID&quot;: &quot;&quot;,
+    &quot;UniProt ID&quot;: &quot;&quot;,
+    &quot;Name&quot;: &quot;Defibrotide&quot;,
+    &quot;KEGG Drug ID&quot;: &quot;&quot;,
+    &quot;UniProt Title&quot;: &quot;&quot;,
+    &quot;Pdrhealth Link&quot;: &quot;&quot;,
+    &quot;HET ID&quot;: &quot;&quot;,
+    &quot;Drugs.com link&quot;: &quot;&quot;,
+    &quot;TTD ID&quot;: &quot;&quot;,
+    &quot;ChemSpider ID&quot;: &quot;&quot;,
+    &quot;DPD ID&quot;: &quot;&quot;,
+    &quot;NDC ID&quot;: &quot;&quot;,
+    &quot;KEGG Compound ID&quot;: &quot;&quot;,
+    &quot;GenBank ID&quot;: &quot;&quot;,
+    &quot;PubChem Compound ID&quot;: &quot;&quot;,
+    &quot;DrugBank ID&quot;: &quot;DB04932&quot;,
+    &quot;PharmGKB ID&quot;: &quot;PA164749105&quot;,
+    &quot;Wikipedia Link&quot;: &quot;http://en.wikipedia.org/wiki/Defibrotide&quot;
+}
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="digging-deeper-list-generation">Digging Deeper: List Generation</h3>
+<pre><code class="lang-javascript">/*
+Convert the list of Entry objects into a clickable list in #drug-list
+*/
+function renderList(listEntries){
+    var container = $(&quot;#drug-list&quot;)
+    //Clear old contents
+    container.html(&quot;&quot;)
+    for(var i = 0; i &lt; listEntries.length; i++){
+        //An Entry object, with some attributes including
+        //a `Name`
+        var entry = listEntries[i];
+        var entryElement = $(&quot;&lt;a&gt;&lt;/a&gt;&quot;)
+        entryElement.text(entry.Name)
+        //Associate the current Entry object
+        //with this `&lt;a&gt;&lt;/a&gt;` tag
+        entryElement.data(&quot;entry&quot;, entry)
+
+        //Bind an event handler to the `&lt;a&gt;` tag&#39;s click event
+        //to render the associated Entry
+        entryElement.click(function(){
+            //Retrieve the associated Entry through $.data
+            var clicked = $(this).data(&#39;entry&#39;)
+            renderEntry(clicked)
+        })
+        //Add the current `&lt;a&gt;&lt;/a&gt;` to the DOM list
+        container.append(entryElement)
+    }
+}
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="digging-deeper-detailed-view">Digging Deeper: Detailed View</h3>
+<pre><code class="lang-javascript">/*
+Translate an Entry object into content in #entry-contents
+*/
+function renderEntry(entry){
+    var container = $(&quot;#entry-contents&quot;)
+    var name = entry.Name
+    var links = {}
+    var ids = {}
+    var keys = Object.keys(entry)
+    var linkPattern = /(.*)\sLink/
+    var idPattern = /(.*)\sID/i
+    //Pull out all of the URLs and Identifiers
+    for(var i = 0; i &lt; keys.length; i++){
+        var key = keys[i]
+        if(linkPattern.test(key)){
+            var sourceName = linkPattern.exec(key)[1]
+            links[sourceName] = entry[key]
+        } 
+        else if(idPattern.test(key)){
+            var sourceName = idPattern.exec(key)[1]
+            ids[sourceName] = entry[key]
+        }
+    }
+    //Render the Entry&#39;s data in HTML
+    container.find(&#39;#drug-name&#39;).text(name)
+    //Render links
+    var linkContainer = container.find(&quot;#link-box&quot;)
+    //Clears previous contents and writes the new header
+    linkContainer.html(&quot;&lt;h4&gt;Links&lt;/h4&gt;&quot;)
+    var linkNames = Object.keys(links)
+    for(var i = 0; i &lt; linkNames.length; i++){
+        var linkName = linkNames[i]
+        var linkURL = links[linkName]
+        var linkTag = $(&quot;&lt;a&gt;&lt;/a&gt;&quot;).attr(&quot;href&quot;, linkURL).text(linkName).attr(&quot;target&quot;, &quot;_blank&quot;)
+        linkContainer.append($(&quot;&lt;div&gt;&lt;/div&gt;&quot;).append(linkTag))
+    }
+    //Render identifiers
+    var idContainer = container.find(&quot;#id-box&quot;)
+    //Clears the previous contents and writes the new header
+    idContainer.html(&quot;&lt;h4&gt;External IDs&lt;/h4&gt;&quot;)
+    var idNames = Object.keys(ids)
+    for(var i = 0; i &lt; idNames.length; i++){
+        var idName = idNames[i]
+        var idString = ids[idName]
+        //Skip this entry if the text is empty
+        if(idString === &quot;&quot;){
+            continue
+        }
+        var idTag = $(&quot;&lt;div&gt;&lt;/div&gt;&quot;).text(idName + &quot;: &quot; + idString)
+        idContainer.append(idTag)
+    }
+}
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="while-we-re-at-css">While we&#39;re at, CSS</h3>
+<pre><code class="lang-css">#drug-list{
+    float: left;
+    border: 1px solid grey;
+    border-radius: 3px;
+    padding: 5px;
+    width: 30%;
+    height: 800px;
+    overflow-y: scroll;
+}
+
+#drug-list a{
+    cursor: pointer;
+    display: block;
+    padding: 2px;
+}
+
+#entry-contents{
+    float: left;
+    border: 1px solid grey;
+    border-radius: 3px;
+    padding: 5px;
+    width: 70%;
+    height: 800px;
+}
+
+/* Put the next element in-line to the left*/
+.float-box{
+    float: left;
+    padding: 10px;
+}
+/* Put the next element on the next line */
+.outer-box{
+    clear: both;
+}
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="the-associated-html">The Associated HTML</h3>
+<pre><code class="lang-html">&lt;body class=&#39;container&#39;&gt;
+&lt;h2&gt;Drug Listing&lt;/h2&gt;
+&lt;div id=&#39;drug-list&#39;&gt;
+
+&lt;/div&gt;
+&lt;div id=&#39;entry-contents&#39;&gt;
+    &lt;h3 id=&#39;drug-name&#39;&gt;&lt;/h3&gt;
+    &lt;div class=&#39;outer-box&#39;&gt;
+        &lt;div id=&#39;link-box&#39; class=&#39;float-box&#39;&gt;
+
+        &lt;/div&gt;
+        &lt;div id=&#39;id-box&#39; class=&#39;float-box&#39;&gt;
+
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;/body&gt;
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="adding-some-filtering">Adding Some Filtering</h3>
+<pre><code class="lang-javascript">function filterList(pattern){
+    var container = $(&quot;#drug-list&quot;)
+    var listEntries = container.children()
+    var pattern = new RegExp(pattern + &#39;.*&#39;, &quot;ig&quot;);
+    for(var i = 0; i &lt; listEntries.length; i++){
+        var entry = $(listEntries[i]);
+        if(!pattern.test(entry.text())){
+            entry.hide()
+        } else {
+            entry.show()
+        }
+    }
+}
+</code></pre>
+<p><a href="24.html" target='_blank'>Demo</a></p>
+
+        </section>
+        <section>
+          <h3 id="binding-search-functions">Binding Search Functions</h3>
+<pre><code class="lang-html">&lt;input id=&#39;search-box&#39; type=&#39;text&#39; placeholder=&#39;Search Drug Name&#39;/&gt;
+</code></pre>
+<pre><code class="lang-javascript">$(function(){
+    renderList(DrugSource)
+    renderEntry(DrugSource[0])
+
+    $(&quot;#search-box&quot;).keyup(function(){
+        var pattern = $(this).val()
+        filterList(pattern)
+    })
+})
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="reusing-an-old-example">Reusing An Old Example</h3>
+<pre><code class="lang-html">&lt;!DOCTYPE html5&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+    &lt;title&gt;&lt;/title&gt;
+    &lt;script src=&#39;https://code.jquery.com/jquery-2.1.3.min.js&#39;&gt;&lt;/script&gt;
+    &lt;link rel=&quot;stylesheet&quot; type=&quot;text/css&quot; href=&quot;../css/bootstrap.min.css&quot;&gt;
+    &lt;script&gt;
+codonTable = { &quot;CTT&quot;: &quot;L&quot;, &quot;ATG&quot;: &quot;M&quot;, &quot;ACA&quot;: &quot;T&quot;, &quot;ACG&quot;: &quot;T&quot;, &quot;ATC&quot;: &quot;I&quot;, &quot;ATA&quot;: &quot;I&quot;, &quot;AGG&quot;: &quot;R&quot;, &quot;CCT&quot;: &quot;P&quot;, &quot;AGC&quot;: &quot;S&quot;, &quot;AGA&quot;: &quot;R&quot;, &quot;ATT&quot;: &quot;I&quot;, &quot;CTG&quot;: &quot;L&quot;, &quot;CTA&quot;: &quot;L&quot;, &quot;ACT&quot;: &quot;T&quot;, &quot;CCG&quot;: &quot;P&quot;, &quot;AGT&quot;: &quot;S&quot;, &quot;CCA&quot;: &quot;P&quot;, &quot;CCC&quot;: &quot;P&quot;, &quot;TAT&quot;: &quot;Y&quot;, &quot;GGT&quot;: &quot;G&quot;, &quot;CGA&quot;: &quot;R&quot;, &quot;CGC&quot;: &quot;R&quot;, &quot;CGG&quot;: &quot;R&quot;, &quot;GGG&quot;: &quot;G&quot;, &quot;GGA&quot;: &quot;G&quot;, &quot;GGC&quot;: &quot;G&quot;, &quot;TAC&quot;: &quot;Y&quot;, &quot;CGT&quot;: &quot;R&quot;, &quot;GTA&quot;: &quot;V&quot;, &quot;GTC&quot;: &quot;V&quot;, &quot;GTG&quot;: &quot;V&quot;, &quot;GAG&quot;: &quot;E&quot;, &quot;GTT&quot;: &quot;V&quot;, &quot;GAC&quot;: &quot;D&quot;, &quot;GAA&quot;: &quot;E&quot;, &quot;AAG&quot;: &quot;K&quot;, &quot;AAA&quot;: &quot;K&quot;, &quot;AAC&quot;: &quot;N&quot;, &quot;CTC&quot;: &quot;L&quot;, &quot;CAT&quot;: &quot;H&quot;, &quot;AAT&quot;: &quot;N&quot;, &quot;CAC&quot;: &quot;H&quot;, &quot;CAA&quot;: &quot;Q&quot;, &quot;CAG&quot;: &quot;Q&quot;, &quot;TGT&quot;: &quot;C&quot;, &quot;TCT&quot;: &quot;S&quot;, &quot;GAT&quot;: &quot;D&quot;, &quot;TTT&quot;: &quot;F&quot;, &quot;TGC&quot;: &quot;C&quot;, &quot;TGG&quot;: &quot;W&quot;, &quot;TTC&quot;: &quot;F&quot;, &quot;TCG&quot;: &quot;S&quot;, &quot;TTA&quot;: &quot;L&quot;, &quot;TTG&quot;: &quot;L&quot;, &quot;TCC&quot;: &quot;S&quot;, &quot;ACC&quot;: &quot;T&quot;, &quot;TCA&quot;: &quot;S&quot;, &quot;GCA&quot;: &quot;A&quot;, &quot;GCC&quot;: &quot;A&quot;, &quot;GCG&quot;: &quot;A&quot;, &quot;GCT&quot;: &quot;A&quot; }
+
+DNASequence = function(sequence){
+    this.sequence = sequence
+    this.translate = function(){
+        return this.sequence.replace(/.../g, function(codon){ return codonTable[codon] })
+    }
+}
+DNASequence.prototype.toString = function(){
+    return &quot;{Sequence &quot; + this.sequence + &quot;}&quot;
+}
+
+$(function(){
+    $(&quot;#protein&quot;).val(&quot;&quot;)
+    $(&#39;#dna&#39;).keyup(function(){
+        var seq = $(this).val().replace(/\s/g, &#39;&#39;)
+        console.log(seq)
+        if(seq.length % 3 == 0){
+            var dna = new DNASequence(seq)
+            var prot = dna.translate()
+            console.log(prot, $(&quot;#protein&quot;).val())
+            $(&quot;#protein&quot;).val(prot)            
+        }
+    }).val(&quot;&quot;)
+})
+
+    &lt;/script&gt;
+    &lt;style&gt;
+textarea{
+    border-radius: 3px;
+}
+    &lt;/style&gt;
+&lt;/head&gt;
+&lt;body class=&#39;container&#39;&gt;
+    &lt;div&gt;
+        &lt;h3&gt;Translate DNA&lt;/h3&gt;
+        &lt;textarea id=&#39;dna&#39; placeholder=&quot;Write DNA here&quot; rows=&quot;10&quot; cols=&quot;50&quot;&gt;
+        &lt;/textarea&gt;
+        &lt;textarea id=&#39;protein&#39; rows=&quot;10&quot; cols=&quot;50&quot; readonly placeholder=&#39;Get Protein Here&#39;&gt;
+        &lt;/textarea&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p><a href="29.html" target='_blank'>Demo</a></p>
+
+        </section>
+        <section>
+          <h3 id="now-you-try-it">Now you try it</h3>
+<p>Try one of the following:</p>
+<ul>
+<li>Make a web page that given a DNA sequence, gives you the RNA sequence</li>
+<li>Make a web page that highlights a repeated pattern in DNA or Protein</li>
+<li>Add more entries to an example&#39;s data</li>
+<li>Make something up!</li>
+</ul>
+
+        </section>
+
+    </div>
+  </div>
+
+  <!-- build:scripts -->
+  <script id="reveal-core" src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.0.0/js/reveal.js" type="text/javascript" charset="utf-8"></script>
+  <script id="reveal-init" type="text/javascript" charset="utf-8">
+    Reveal.initialize({
+      autoSlide: 0,
+      autoSlideStoppable: true,
+      backgroundTransition: 'default',
+      center: true,
+      controls: true,
+      embedded: false,
+      fragments: true,
+      help: true,
+      hideAddressBar: true,
+      history: false,
+      keyboard: true,
+      loop: false,
+      mouseWheel: false,
+      overview: true,
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      previewLinks: false,
+      progress: true,
+      rtl: false,
+      slideNumber: true,
+      touch: true,
+      transition: 'default',
+      transitionSpeed: 'default',
+      viewDistance: 3
+    });
+  </script>
+  <!-- endbuild -->
+</body>
+</html>
