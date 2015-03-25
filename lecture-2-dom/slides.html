@@ -56,11 +56,15 @@
           <h3 id="what-is-the-dom-">What is the DOM?</h3>
 <p><strong>D</strong>ocument <strong>O</strong>bject <strong>M</strong>odel
 The computational representation of a web page. Want to operate on a part of the web page? You need to find it first!</p>
-<pre><code class="lang-javascript">var htmlCollection = document.getElementsByTagName(&quot;div&quot;)
-var htmlCollection = document.getElementsByClassName(&quot;content&quot;)
-var singleTag = document.getElementById(&quot;page-header&quot;)
+<pre><code class="lang-javascript">htmlCollection = document.getElementsByTagName(&quot;div&quot;)
+htmlCollection = document.getElementsByClassName(&quot;content&quot;)
+singleTag = document.getElementById(&quot;page-header&quot;)
+//Select by CSS path
+htmlCollection = document.querySelectorAll(&quot;.content&quot;)
+singletag = document.querySelector(&quot;#page-header&quot;)
 </code></pre>
-<p><code>htmlCollection</code> is an array of <code>DOM objects</code>, while <code>singleTag</code> is just one DOM object. <code>DOM objects</code> are just JavaScript wrappers around the host&#39;s representation of that rendered content. You change the properties of the page by modifying <code>DOM objects</code>.</p>
+<p><small><code>htmlCollection</code> is an array of <code>DOM objects</code>, while <code>singleTag</code> is just one <code>DOM object</code>. <code>DOM objects</code> are just JavaScript wrappers around the host&#39;s representation of that rendered content.</small></p>
+<p>You change the properties of the page by modifying the <code>DOM</code>.</p>
 
         </section>
         <section>
@@ -139,7 +143,7 @@ document.onreadystatechange = function(){
         </section>
         <section>
           <h3 id="jquery-the-unifying-api">jQuery, the unifying API</h3>
-<p><code>jQuery</code> is a library that provides many, many cross-browser, backwards compatible functions for event handling DOM manipulation, iterator functions, <code>AJAX</code>, and more.</p>
+<p><a href="https://jquery.com/"><code>jQuery</code></a> is a library that provides many, many cross-browser, backwards compatible functions for event handling DOM manipulation, iterator functions, <code>AJAX</code>, and more.</p>
 <p>Instead of handling each individual browser ourselves, let&#39;s use jQuery.</p>
 
         </section>
@@ -196,7 +200,7 @@ tag.data({}) //Associate application data with element
         $(&quot;#page-header&quot;).mouseover(function(){$(this).html(&quot;Mouseover!&quot;)})
         .mouseout(function(){$(this).html(&quot;Mouseout!&quot;)})
     })
-    appLogic = function(){alert(&quot;Ping!&quot;)}
+    appLogic = function(){alert(&quot;Ping!&quot; + this)}
     &lt;/script&gt;
 &lt;/head&gt;
 &lt;body&gt;

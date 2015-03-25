@@ -38,12 +38,17 @@ A web page is an XML file
 **D**ocument **O**bject **M**odel
 The computational representation of a web page. Want to operate on a part of the web page? You need to find it first!
 ```javascript
-var htmlCollection = document.getElementsByTagName("div")
-var htmlCollection = document.getElementsByClassName("content")
-var singleTag = document.getElementById("page-header")
+htmlCollection = document.getElementsByTagName("div")
+htmlCollection = document.getElementsByClassName("content")
+singleTag = document.getElementById("page-header")
+//Select by CSS path
+htmlCollection = document.querySelectorAll(".content")
+singletag = document.querySelector("#page-header")
 ```
 
-`htmlCollection` is an array of `DOM objects`, while `singleTag` is just one DOM object. `DOM objects` are just JavaScript wrappers around the host's representation of that rendered content. You change the properties of the page by modifying `DOM objects`.
+<small>`htmlCollection` is an array of `DOM objects`, while `singleTag` is just one `DOM object`. `DOM objects` are just JavaScript wrappers around the host's representation of that rendered content.</small>
+
+You change the properties of the page by modifying the `DOM`.
 
 
 ### Changing Text and Color
@@ -121,7 +126,7 @@ Often, the DOM isn't fully parsed and ready to be acted on with JavaScript when 
 
 
 ### jQuery, the unifying API
-`jQuery` is a library that provides many, many cross-browser, backwards compatible functions for event handling DOM manipulation, iterator functions, `AJAX`, and more.
+[`jQuery`](https://jquery.com/) is a library that provides many, many cross-browser, backwards compatible functions for event handling DOM manipulation, iterator functions, `AJAX`, and more.
 
 Instead of handling each individual browser ourselves, let's use jQuery.
 
@@ -182,7 +187,7 @@ Functions with `{}` arguments can be parameterized with a key-value pair of argu
         $("#page-header").mouseover(function(){$(this).html("Mouseover!")})
         .mouseout(function(){$(this).html("Mouseout!")})
     })
-    appLogic = function(){alert("Ping!")}
+    appLogic = function(){alert("Ping!" + this)}
     </script>
 </head>
 <body>

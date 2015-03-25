@@ -103,6 +103,13 @@ function runDemoBlockOnTargetWindow(){
 }
 
 function renderDemoBlock(){
+    var demoLink = $(".present a:contains('Demo')")
+    if(demoLink.attr('href') !== undefined){
+        demoWindow = window.open(demoLink.attr('href'), "_blank", "height=600,width=600")
+        window.targetWindow = demoWindow
+        return demoWindow
+    }
+    
     var content = $(".present pre code.lang-html").text()
     console.log(content, $(".present pre code.lang-html"))
     if(content.length == ""){
