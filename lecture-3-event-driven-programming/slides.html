@@ -64,24 +64,44 @@ anotherAsync();
 
         </section>
         <section>
-          <h3 id="events-and-asynchronous-execution">Events and Asynchronous Execution</h3>
+          <h3 id="maintaining-execution-order-callback-chains">Maintaining Execution Order - Callback Chains</h3>
+<pre><code class="lang-javascript">function asyncFunction(args, callback){
+    var result
+    //When the triggering event occurs, do something
+    //...
+    callback() //Proceed with execution through this function
+}
+
+asyncFunction(argObj, function(data){ /*More logic on result here*/ })
+</code></pre>
+<p>There is no way to know when this function will be called, or to <em>directly</em> capture information from its execution. We depend upon the sequence of callbacks to maintain the order of execution</p>
+
+        </section>
+        <section>
+          <h3 id="nesting">Nesting</h3>
 <pre><code class="lang-javascript">// Add an event handler for clicks on this button
 $(&quot;#button&quot;).click(function(eventObj){
     //...
-    moreLogic();
+    //An async function called inside an async function
+    //with a callback
+    moreAsync(function(){
+            //An async function called within ...
+            loadDataAsync(url, function(data){
+                    workOnData(data)
+                })
+        //No return value from here
+        });
     //...
-    //No return value from here
 })
 </code></pre>
-<p>There is no way to know when this function will be called, or to <em>directly</em> capture information from its execution. </p>
 
         </section>
         <section>
           <h3 id="when-is-asynchrony-useful">When is Asynchrony useful</h3>
 <ol>
 <li>Setting up responses to events, user-generated or otherwise</li>
-<li>Requesting remote resources, e.g. data from the server &ast;</li>
-<li>Timer-based invocation</li>
+<li>Requesting remote resources, e.g. data from the server <b>&ast;</b></li>
+<li>Timer-based invocation, such as an update loop or boundary checking</li>
 </ol>
 <p>By using asynchronous methods, the browser remains responsive to the user while these long operations run in the background.</p>
 
@@ -426,7 +446,7 @@ function renderHit(hitObj){
 
         </section>
         <section>
-          <h3 id="drawing-charts">Drawing Charts</h3>
+          <h3 id="less-text-more-color-drawing-charts">Less Text, More Color - Drawing Charts</h3>
 <p>There is a new graphics library born for the internet every week. Some very good ones are:</p>
 <ol>
 <li>D3.js</li>
@@ -491,6 +511,43 @@ function plotARO(queryObj){
 }
 </code></pre>
 <p><a href="http://localhost:8000/315.html" target='_blank'>Run Local Demo</a></p>
+
+        </section>
+        <section>
+          <h3 id="other-asynchronous-functions">Other Asynchronous Functions</h3>
+<pre><code class="lang-javascript">//These functions create global timers controlling async function calls.
+//They return timer ID numbers
+//Calls repeatedly
+timerId = setInterval(callbackFunction, callFrequency)
+//Calls only once
+setTimeout(callbackFunction, callDelay)
+//Cancel a timer
+clearInterval(timerId)
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="other-events">Other Events</h3>
+<pre><code class="lang-javascript">$.mousein
+$.mouseout
+$.keydown
+$.keyup
+$.keypress
+$.focus
+$.blur
+</code></pre>
+<p>These are built-in events. You can create your own using <code>Event</code> and the related machinery. </p>
+
+        </section>
+        <section>
+          <h3 id="other-http-topics">Other HTTP Topics</h3>
+<ol>
+<li>Cookies</li>
+<li>Cross-Origin Requests and Data Sharing</li>
+<li>Proxy Requests</li>
+<li>HTTP Headers</li>
+<li>Remote Procedure Calls</li>
+</ol>
 
         </section>
         <section>

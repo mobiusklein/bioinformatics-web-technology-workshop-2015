@@ -47,24 +47,44 @@ anotherAsync();
 `anotherAsync()` may complete before `asyncWithSideEffects()` completes. They may have unexpected interactions.
 
 
+### Maintaining Execution Order - Callback Chains
+```javascript
+function asyncFunction(args, callback){
+    var result
+    //When the triggering event occurs, do something
+    //...
+    callback() //Proceed with execution through this function
+}
 
-### Events and Asynchronous Execution
+asyncFunction(argObj, function(data){ /*More logic on result here*/ })
+```
+There is no way to know when this function will be called, or to *directly* capture information from its execution. We depend upon the sequence of callbacks to maintain the order of execution
+
+
+### Nesting
 ```javascript
 // Add an event handler for clicks on this button
 $("#button").click(function(eventObj){
     //...
-    moreLogic();
+    //An async function called inside an async function
+    //with a callback
+    moreAsync(function(){
+            //An async function called within ...
+            loadDataAsync(url, function(data){
+                    workOnData(data)
+                })
+        //No return value from here
+        });
     //...
-    //No return value from here
 })
 ```
-There is no way to know when this function will be called, or to *directly* capture information from its execution. 
+
 
 
 ### When is Asynchrony useful
 1. Setting up responses to events, user-generated or otherwise
-2. Requesting remote resources, e.g. data from the server &ast;
-3. Timer-based invocation
+2. Requesting remote resources, e.g. data from the server <b>&ast;</b>
+3. Timer-based invocation, such as an update loop or boundary checking
 
 By using asynchronous methods, the browser remains responsive to the user while these long operations run in the background.
 
@@ -394,7 +414,7 @@ function renderHit(hitObj){
 <a href="http://localhost:8000/314.html" target='_blank'>Run Local Demo</a>
 
 
-### Drawing Charts
+### Less Text, More Color - Drawing Charts
 There is a new graphics library born for the internet every week. Some very good ones are:
 
 1. D3.js
@@ -459,6 +479,40 @@ function plotARO(queryObj){
 ```
 
 <a href="http://localhost:8000/315.html" target='_blank'>Run Local Demo</a>
+
+
+### Other Asynchronous Functions
+```javascript
+//These functions create global timers controlling async function calls.
+//They return timer ID numbers
+//Calls repeatedly
+timerId = setInterval(callbackFunction, callFrequency)
+//Calls only once
+setTimeout(callbackFunction, callDelay)
+//Cancel a timer
+clearInterval(timerId)
+```
+
+
+### Other Events
+```javascript
+$.mousein
+$.mouseout
+$.keydown
+$.keyup
+$.keypress
+$.focus
+$.blur
+```
+These are built-in events. You can create your own using `Event` and the related machinery. 
+
+
+### Other HTTP Topics
+1. Cookies
+2. Cross-Origin Requests and Data Sharing
+3. Proxy Requests
+4. HTTP Headers
+5. Remote Procedure Calls
 
 
 ### You Try It
