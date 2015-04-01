@@ -31,14 +31,14 @@
 
         </section>
         <section>
-          <h3 id="pragma-jquery-other-wrappers-">Pragma - jQuery &amp; other &quot;Wrappers&quot;</h3>
+          <h3 id="jquery-other-wrappers-">jQuery &amp; other &quot;Wrappers&quot;</h3>
 <p>Rarely if ever use the built-in methods over <code>jQuery</code> and other wrapping APIs. Assume I am using <code>jQuery</code> through the <code>$</code> variable unless I say otherwise.</p>
 
         </section>
         <section>
-          <h3 id="pragma-servers-and-requests">Pragma - Servers and Requests</h3>
+          <h3 id="servers-and-requests">Servers and Requests</h3>
 <p>Starting this week, I am going to be using simple CGI scripts written in <code>Python</code> for some more advanced examples.</p>
-<p>If you download the lectures from [<a href="https://github.com/mobiusklein/bioinformatics-web-technology-workshop-2015">https://github.com/mobiusklein/bioinformatics-web-technology-workshop-2015</a>] and store them in a directory <code>workshop</code>, you can run them locally like this:</p>
+<p>If you download the lectures from <a href="https://github.com/mobiusklein/bioinformatics-web-technology-workshop-2015">https://github.com/mobiusklein/bioinformatics-web-technology-workshop-2015</a> and store them in a directory <code>workshop</code>, you can run them locally like this:</p>
 <pre><code class="lang-bash">cd workshop/lecture-3-event-driven-programming
 python -m CGIHTTPServer # Python 2.X
 python -m http.server --cgi # Python 3.X
@@ -83,6 +83,7 @@ $(&quot;#button&quot;).click(function(eventObj){
 <li>Requesting remote resources, e.g. data from the server &ast;</li>
 <li>Timer-based invocation</li>
 </ol>
+<p>By using asynchronous methods, the browser remains responsive to the user while these long operations run in the background.</p>
 
         </section>
         <section>
@@ -102,6 +103,31 @@ $.get(&quot;drug_array.json&quot;, function(data){
 </code></pre>
 <p>A <em>GET</em> request is for fetching resources by name, or by passing a relatively small amount of data to the server to look it up with.</p>
 <p>Here we&#39;re requesting a JSON file, containing some information. When the request completes, the <code>successCallback</code> will fire with the fetched content in the <code>data</code> variable.</p>
+
+        </section>
+        <section>
+          <h3 id="what-is-returned">What is Returned</h3>
+<p>The returned value from this expression is an object describing the request</p>
+<pre><code class="lang-javascript">request = $.get(url)
+request.success(successCallback) //Try
+request.error(errorCallback) //Catch
+request.complete(completeCallback) //Finally
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="other-jquery-ajax-helpers">Other jQuery AJAX Helpers</h3>
+<pre><code class="lang-javascript">//Generic, customizable request. All other 
+//methods are built on top of this
+$.ajax
+//Send data to the server and get back a response
+$.post
+//Specializations of $.get for specific MIME types
+$.getScript
+$.getJSON
+//Global configuration, e.g. disable caching
+$.ajaxSetup
+</code></pre>
 
         </section>
         <section>
@@ -142,7 +168,7 @@ $(function(){
         <section>
           <h3 id="was-ajax-necessary-">Was AJAX necessary?</h3>
 <p>This request only fires once and it is only to load the data into the browser. Do we need AJAX for this? </p>
-<p>No, but it speeds up page loading since the page isn&#39;t waiting for all of the data to be parsed before it is <code>ready</code>. </p>
+<p>No, but it speeds up page loading since the page isn&#39;t waiting for all of the data to be parsed before it is <code>ready</code>.</p>
 
         </section>
         <section>
@@ -261,6 +287,11 @@ print json.dumps(dataset)
 
         </section>
         <section>
+          <h3 id="post-requests">POST Requests</h3>
+<p><em>POST</em> requests are used to transport arbitrarily large amounts of data to a server, stored as key-value pairs. These are usually obtained from a <code>&lt;form&gt;&lt;/form&gt;</code> tag.</p>
+
+        </section>
+        <section>
           <h3 id="front-end-problem-1-offer-the-user-a-choice">Front-End Problem 1: Offer the user a choice</h3>
 <pre><code class="lang-javascript">var Genomes = []
 var DataSets = []
@@ -324,6 +355,23 @@ function loadDataset(){
         })
 }
 </code></pre>
+
+        </section>
+        <section>
+          <h3 id="when-requests-go-wrong">When Requests Go Wrong</h3>
+<p>When a request fails, it could be:</p>
+<ol>
+<li>HTTP Error <a href="https://www.flickr.com/photos/girliemac/sets/72157628409467125">In Cat Form</a><ul>
+<li>4XX series: The request was malformed or asking for non-existant content</li>
+<li>5XX series: The server encountered an error while processing the request</li>
+</ul>
+</li>
+<li>MIME-type resolution Error<ul>
+<li>Data sent with wrong Content-Type fails to parse correctly</li>
+<li>HTTP Compression Failure</li>
+</ul>
+</li>
+</ol>
 
         </section>
         <section>

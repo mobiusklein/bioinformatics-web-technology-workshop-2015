@@ -12,14 +12,14 @@
 ### Lecture 3 - Event Driven Programming and AJAX
 
 
-### Pragma - jQuery & other "Wrappers"
+### jQuery & other "Wrappers"
 Rarely if ever use the built-in methods over `jQuery` and other wrapping APIs. Assume I am using `jQuery` through the `$` variable unless I say otherwise.
 
 
-### Pragma - Servers and Requests
+### Servers and Requests
 Starting this week, I am going to be using simple CGI scripts written in `Python` for some more advanced examples.
 
-If you download the lectures from [https://github.com/mobiusklein/bioinformatics-web-technology-workshop-2015] and store them in a directory `workshop`, you can run them locally like this:
+If you download the lectures from https://github.com/mobiusklein/bioinformatics-web-technology-workshop-2015 and store them in a directory `workshop`, you can run them locally like this:
 ```bash
 cd workshop/lecture-3-event-driven-programming
 python -m CGIHTTPServer # Python 2.X
@@ -66,6 +66,8 @@ There is no way to know when this function will be called, or to *directly* capt
 2. Requesting remote resources, e.g. data from the server &ast;
 3. Timer-based invocation
 
+By using asynchronous methods, the browser remains responsive to the user while these long operations run in the background.
+
 
 ### AJAX Requests
 **A**synchronous **J**avascript **A**nd **X**ML
@@ -86,6 +88,31 @@ $.get("drug_array.json", function(data){
 A *GET* request is for fetching resources by name, or by passing a relatively small amount of data to the server to look it up with.
 
 Here we're requesting a JSON file, containing some information. When the request completes, the `successCallback` will fire with the fetched content in the `data` variable.
+
+
+### What is Returned
+The returned value from this expression is an object describing the request
+```javascript
+request = $.get(url)
+request.success(successCallback) //Try
+request.error(errorCallback) //Catch
+request.complete(completeCallback) //Finally
+```
+
+
+### Other jQuery AJAX Helpers
+```javascript
+//Generic, customizable request. All other 
+//methods are built on top of this
+$.ajax
+//Send data to the server and get back a response
+$.post
+//Specializations of $.get for specific MIME types
+$.getScript
+$.getJSON
+//Global configuration, e.g. disable caching
+$.ajaxSetup
+```
 
 
 ### In Action
@@ -123,8 +150,7 @@ $(function(){
 ### Was AJAX necessary?
 This request only fires once and it is only to load the data into the browser. Do we need AJAX for this? 
 
-No, but it speeds up page loading since the page isn't waiting for all of the data to be parsed before it is `ready`. 
-
+No, but it speeds up page loading since the page isn't waiting for all of the data to be parsed before it is `ready`.
 
 
 ### A More Involved Example - What does the data look like?
@@ -235,6 +261,9 @@ print json.dumps(dataset)
 ```
 
 
+### POST Requests
+*POST* requests are used to transport arbitrarily large amounts of data to a server, stored as key-value pairs. These are usually obtained from a `<form></form>` tag.
+
 
 ### Front-End Problem 1: Offer the user a choice
 ```javascript
@@ -300,6 +329,17 @@ function loadDataset(){
         })
 }
 ```
+
+
+### When Requests Go Wrong
+When a request fails, it could be:
+
+1. HTTP Error [In Cat Form](https://www.flickr.com/photos/girliemac/sets/72157628409467125)
+    - 4XX series: The request was malformed or asking for non-existant content
+    - 5XX series: The server encountered an error while processing the request
+2. MIME-type resolution Error
+    - Data sent with wrong Content-Type fails to parse correctly
+    - HTTP Compression Failure
 
 
 ### Render Queries
