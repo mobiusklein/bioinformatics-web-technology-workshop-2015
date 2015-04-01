@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=1024, user-scalable=no">
+
+  <title>Just Another Bedecked Presentation</title>
+
+  <link id="reveal-core" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.0.0/css/reveal.min.css">
+  <link id="reveal-theme" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.0.0/css/theme/simple.css">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+        <section>
+          <p><script src='https://code.jquery.com/jquery-2.1.3.min.js'></script></p>
+<p><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js" type="text/javascript" charset="utf-8"></script></p>
+<p><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/languages/javascript.min.js" type="text/javascript" charset="utf-8"></script></p>
+<p><link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/monokai_sublime.min.css"></p>
+<p><link rel="stylesheet" type="text/css" href="../css/slides.css"></p>
+<p><script src='../js/slides.js'></script></p>
+<p><script>runDemo=DOMDemo</script></p>
+<h2 id="javascript-and-web-technology-workshop">JavaScript and Web Technology Workshop</h2>
+<h5 id="joshua-klein">Joshua Klein</h5>
+
+        </section>
+        <section>
+          <h3 id="lecture-3-event-driven-programming-and-ajax">Lecture 3 - Event Driven Programming and AJAX</h3>
+
+        </section>
+        <section>
+          <h3 id="pragma-jquery-other-wrappers-">Pragma - jQuery &amp; other &quot;Wrappers&quot;</h3>
+<p>Rarely if ever use the built-in methods over <code>jQuery</code> and other wrapping APIs. Assume I am using <code>jQuery</code> through the <code>$</code> variable unless I say otherwise.</p>
+
+        </section>
+        <section>
+          <h3 id="pragma-servers-and-requests">Pragma - Servers and Requests</h3>
+<p>Starting this week, I am going to be using simple CGI scripts written in <code>Python</code> for some more advanced examples.</p>
+<p>If you download the lectures from [<a href="https://github.com/mobiusklein/bioinformatics-web-technology-workshop-2015">https://github.com/mobiusklein/bioinformatics-web-technology-workshop-2015</a>] and store them in a directory <code>workshop</code>, you can run them locally like this:</p>
+<pre><code class="lang-bash">cd workshop/lecture-3-event-driven-programming
+python -m CGIHTTPServer # Python 2.X
+python -m http.server --cgi # Python 3.X
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="what-is-synchronous-mean-">What is &quot;Synchronous&quot; mean?</h3>
+<pre><code class="lang-javascript">value = syncWithSideEffects();
+value2 = anotherSync();
+</code></pre>
+<p><code>syncWithSideEffects()</code> and all of its side effects will resolve before <code>anotherSync()</code>. </p>
+<p>Their return values will be immediately defined.</p>
+
+        </section>
+        <section>
+          <h3 id="what-is-asynchronous-mean-">What is &quot;Asynchronous&quot; mean?</h3>
+<pre><code class="lang-javascript">asyncWithSideEffects();
+anotherAsync();
+</code></pre>
+<p><code>asyncWithSideEffects()</code> will return before its side effects have resolved. Its return value may be <code>undefined</code> or not readily usable. </p>
+<p><code>anotherAsync()</code> may complete before <code>asyncWithSideEffects()</code> completes. They may have unexpected interactions.</p>
+
+        </section>
+        <section>
+          <h3 id="events-and-asynchronous-execution">Events and Asynchronous Execution</h3>
+<pre><code class="lang-javascript">// Add an event handler for clicks on this button
+$(&quot;#button&quot;).click(function(eventObj){
+    //...
+    moreLogic();
+    //...
+    //No return value from here
+})
+</code></pre>
+<p>There is no way to know when this function will be called, or to <em>directly</em> capture information from its execution. </p>
+
+        </section>
+        <section>
+          <h3 id="when-is-asynchrony-useful">When is Asynchrony useful</h3>
+<ol>
+<li>Setting up responses to events, user-generated or otherwise</li>
+<li>Requesting remote resources, e.g. data from the server &ast;</li>
+<li>Timer-based invocation</li>
+</ol>
+
+        </section>
+        <section>
+          <h3 id="ajax-requests">AJAX Requests</h3>
+<p><strong>A</strong>synchronous <strong>J</strong>avascript <strong>A</strong>nd <strong>X</strong>ML</p>
+<p>Make HTTP Requests asynchronously. There is a sophisticated built-in object type called <code>XMLHTTPRequest</code>, but it requires many lines of code to use.</p>
+<p>Instead I&#39;ll using a <code>jQuery</code> wrapper.</p>
+
+        </section>
+        <section>
+          <h3 id="get-requsts">GET Requsts</h3>
+<p><button onclick="runDemoBlock()"><b>Run Me</b></button></p>
+<pre><code class="lang-javascript">//$.get(urlFragment, successCallback)
+$.get(&quot;drug_array.json&quot;, function(data){
+    alert(data[0].Name)
+})
+</code></pre>
+<p>A <em>GET</em> request is for fetching resources by name, or by passing a relatively small amount of data to the server to look it up with.</p>
+<p>Here we&#39;re requesting a JSON file, containing some information. When the request completes, the <code>successCallback</code> will fire with the fetched content in the <code>data</code> variable.</p>
+
+        </section>
+        <section>
+          <h3 id="in-action">In Action</h3>
+<p>Drug Listing Demo features</p>
+<ol>
+<li>Load data from server with AJAX on page load<ul>
+<li>Render data as a list of items to display</li>
+<li>Render a detailed view of one selected item</li>
+</ul>
+</li>
+<li>Filter the list of items every time a text box changes</li>
+</ol>
+<p><a href="24.html" target='_blank'>Demo</a></p>
+
+        </section>
+        <section>
+          <h3 id="looking-at-the-code">Looking at the Code</h3>
+<pre><code class="lang-javascript">var DrugSource = [];
+$(function(){
+    //AJAX Here
+    $.get(&quot;drug_array.json&quot;, function(data){
+        //Save the data here
+        DrugSource = data
+        renderList(DrugSource)
+        renderEntry(DrugSource[0])
+    })
+    //Event Handler when search changes
+    $(&quot;#search-box&quot;).keyup(function(){
+        var pattern = $(this).val()
+        //In-memory filtering
+        filterList(pattern)
+    })
+})
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="was-ajax-necessary-">Was AJAX necessary?</h3>
+<p>This request only fires once and it is only to load the data into the browser. Do we need AJAX for this? </p>
+<p>No, but it speeds up page loading since the page isn&#39;t waiting for all of the data to be parsed before it is <code>ready</code>. </p>
+
+        </section>
+        <section>
+          <h3 id="a-more-involved-example-what-does-the-data-look-like-">A More Involved Example - What does the data look like?</h3>
+<pre><code class="lang-javascript">{
+    &quot;573&quot;:{ //A Genome
+        &quot;AT-polypeptides&quot;: [ //A data set
+    { //An entry in a data set
+        query_def: &quot;gi|499528894|ref|CCI75254| ddl [Klebsiella pneumoniae]&quot;,
+        hits: [
+            {
+                hit_def: &quot;CP000647.1.gene96.p01 D-alanylalanine synthetase. Encoded by gene ddl. ARO:1000001 process or component of antibiotic biology or chemistry. ARO:3000723 cycloserine sensitive D-alanine synthetase. [Klebsiella pneumoniae subsp. pneumoniae MGH 78578]&quot;,
+                e_value: 0,
+                hsps: [
+                {
+                hit_from: 1,
+                query_from: 1,
+                hit_frame: &quot;0&quot;,
+                gaps: 0,
+                identity: &quot;304&quot;,
+                hit_to: 306,
+                query_to: 306,
+                hseq: &quot;MADKIAVLFGGTSAEREVSLNSGAAVLAGLREGGVDAHPVDPRDVDITQLKKQGFK...&quot;,
+                qseq: &quot;MADKIAVLFGGTSAEREVSLNSGAAVLAGLREGGVDAHPVDPRDVDITQLKKQG...&quot;,
+                e_value: 0,
+                query_frame: &quot;0&quot;,
+                __len__: 306,
+                midline: &quot;MADKIAVLFGGTSAEREVSLNSGAAVLAGLREGGVDAHPVDPRDVDITQLKKQG...&quot;
+                    }
+                    ...
+                ],
+            },
+            ...
+        ],
+        ...
+    },
+    ...
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="the-plan">The Plan</h3>
+<ol>
+<li>The user selects a genome and a data set to get a list of gene annotations</li>
+<li>The user can view individual genes and their matches, or a summary</li>
+<li>The user can change the genome or data set at any time to get a new list of genes.</li>
+</ol>
+
+        </section>
+        <section>
+          <h3 id="what-do-we-need-">What Do We Need?</h3>
+<ol>
+<li>A list of genomes and data sets for each genome from the server<ul>
+<li>Assume we can&#39;t hard-code the genomes</li>
+<li>Assume the same data sets may be available for all genomes</li>
+</ul>
+</li>
+<li>A way to get the chosen genome and data set from the user</li>
+<li>A way to show the user the genes in the data set recieved</li>
+</ol>
+
+        </section>
+        <section>
+          <h3 id="a-more-involved-example-server-action-retrieve-available-genomes-and-data-sets">A More Involved Example - Server Action: Retrieve Available Genomes and Data sets</h3>
+<pre><code class="lang-python">#!python
+&#39;&#39;&#39;/cgi-bin/klebsiella_data.py&#39;&#39;&#39;
+import cgi
+import cgitb
+import json
+cgitb.enable()
+
+data = json.load(open(&quot;klebsiella-pneumoniae_ti.fa.filtered.genomes.innate_resistance.json&quot;))
+
+options = {
+    &quot;genome_ids&quot;: data.keys(),
+    &quot;dataset_ids&quot;: data.values()[0].keys()
+}
+
+print &quot;Content-Type: application/json;charset=utf-8;&quot;
+print
+
+print json.dumps(options)
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="a-more-involved-example-server-action-retrieve-data-set">A More Involved Example - Server Action: Retrieve Data set</h3>
+<pre><code class="lang-python">#!python
+&#39;&#39;&#39;/cgi-bin/klebsiella_options.py&#39;&#39;&#39;
+import cgi
+import cgitb
+import json
+cgitb.enable()
+
+store = cgi.FieldStorage()
+data = json.load(open(&quot;klebsiella-pneumoniae_ti.fa.filtered.genomes.innate_resistance.json&quot;))
+
+parameters = {}
+for key in store.keys():
+    parameters[key] = store[key].value
+
+if parameters.get(&quot;genome_id&quot;) is None:
+    parameters[&quot;genome_id&quot;] = u&#39;573&#39;
+if parameters.get(&quot;dataset_id&quot;) is None:
+    parameters[&quot;dataset_id&quot;] = &quot;comprehensive_antibiotic_resistance_database_AT-polypeptides&quot;
+
+genome = data[parameters[&quot;genome_id&quot;]]
+dataset = genome[parameters[&quot;dataset_id&quot;]]
+
+# Write HTTP Headers
+print &quot;Content-Type: application/json;charset=utf-8;&quot;
+print
+# Write Response content
+print json.dumps(dataset)
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="front-end-problem-1-offer-the-user-a-choice">Front-End Problem 1: Offer the user a choice</h3>
+<pre><code class="lang-javascript">var Genomes = []
+var DataSets = []
+
+$(function(){
+    $.get(&quot;/cgi-bin/klebsiella_options.py&quot;, function(data){
+        Genomes = data.genome_ids
+        DataSets = data.dataset_ids
+        var genomeSelector = $(&quot;#genome-selector&quot;)
+        for(var i = 0; i &lt; Genomes.length; i++){
+            var genomeId = Genomes[i]
+            var option = $(&quot;&lt;option&gt;&lt;/option&gt;&quot;).val(genomeId).text(genomeId)
+            genomeSelector.append(option)
+        }
+        var dataSetSelector = $(&quot;#dataset-selector&quot;)
+        for(var i = 0; i &lt; DataSets.length; i++){
+            var dataSetId = DataSets[i];
+            var label = $(&quot;&lt;lable class=&#39;radio-label&#39;&gt;&lt;/lable&gt;&quot;).text(dataSetId.replace(&quot;comprehensive_antibiotic_resistance_database_&quot;, &quot;&quot;) + &quot; &quot;)
+            var radioBtn = $(&#39;&lt;input type=&quot;radio&quot; name=&quot;dataset_id&quot;/&gt;&#39;).val(dataSetId)
+            dataSetSelector.append(label.append(radioBtn))
+        }
+    })
+})
+</code></pre>
+<p><a href="http://localhost:8000/313.html" target='_blank'>Run Local Demo</a></p>
+
+        </section>
+        <section>
+          <h3 id="front-end-problem-2-processing-the-user-s-choice">Front-End Problem 2 - Processing the user&#39;s choice</h3>
+<pre><code class="lang-javascript">$(function(){
+    //...
+    $(&quot;#load-btn&quot;).click(function(evt){
+        evt.preventDefault();
+        loadDataset()
+    })
+})
+var currentDataSet = []
+function loadDataset(){
+    //Translate the options form into a string or object
+    //to be sent to the server
+    var form = $(&quot;#option-form&quot;).serialize()
+    //POST the data to the server
+    $.post(&quot;/cgi-bin/klebsiella_data.py&quot;, form)
+    //If the request succeeds, handle the response as follows
+    .success(function(data){
+        //Save the response data
+        currentDataSet = data;
+        //If there is content to render
+        if(data.length &gt; 1){
+            //Show the first entry
+            renderQuery(data[0])
+            //Render the list of available entries as a select list
+            renderQueryList(data)
+        } else {
+            //Otherwise let the user know this query had no data
+            apologize(&quot;No data were found meeting these search criterion&quot;)
+        }
+    //If the request failed, let the user know
+    }).error(function(error){
+        apologize(&quot;An error occurred while processing your request. &quot; + error.toString())
+        })
+}
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="render-queries">Render Queries</h3>
+<pre><code class="lang-javascript">$(function(){
+    //...
+    $(&quot;#gene-selector&quot;).change(function(){
+        renderQuery(currentDataSet[this.value])
+    })
+})
+function renderQueryList(queries){
+    var container = $(&quot;#gene-selector&quot;)
+    container.html(&quot;&quot;)
+    for(var i = 0; i &lt; queries.length; i++){
+        var queryObj = queries[i]
+        var queryName = queryObj.query_def.replace(/\[.+\]$/, &quot;&quot;)
+        var optionTag = $(&quot;&lt;option&gt;&lt;/option&gt;&quot;).text(queryName + &quot; - &quot; + queryObj.hits.length)
+            .data(&#39;object&#39;, queryObj).val(i)
+        container.append(optionTag)
+    }
+}
+
+function renderQuery(queryObj){
+    var container = $(&quot;#query&quot;)
+    container.html(&quot;&quot;)
+    container.append(
+        $(&quot;&lt;h3&gt;&lt;/h3&gt;&quot;).text(queryObj.query_def.replace(/\[.+\]$/, &quot;&quot;))
+        )
+    var hitContainer = $(&quot;&lt;div&gt;&lt;/div&gt;&quot;)
+    for(var i = 0; i &lt; queryObj.hits.length; i++){
+        var hitRep = renderHit(queryObj.hits[i])
+        hitContainer.append(hitRep)
+    }
+    container.append(hitContainer)
+}
+
+function renderHit(hitObj){
+    var container = $(&quot;&lt;div&gt;&lt;/div&gt;&quot;).addClass(&quot;hit&quot;)
+    var parts = hitObj.hit_def.split(/\s/)
+    var name = parts[0]
+    var description = parts.slice(1).join(&quot; &quot;)
+    .replace(&quot;ARO:1000001 process or component of antibiotic biology or chemistry. &quot;, &quot;&quot;)
+    container.append($(&quot;&lt;h5&gt;&lt;/h5&gt;&quot;).text(name))
+    .append($(&quot;&lt;b&gt;&lt;/b&gt;&quot;).text(&quot;E value: &quot; + hitObj.e_value))
+    .append(&quot;&lt;br&gt;&quot;)
+    .append($(&quot;&lt;b&gt;&lt;/b&gt;&quot;).text(&quot;Identity: &quot; + hitObj.hsps[0].identity))    
+    .append($(&quot;&lt;div&gt;&lt;/div&gt;&quot;).addClass(&quot;hit-description&quot;).html(description.split(/\.\s/).join(&quot;.&lt;br&gt;&quot;)))
+    return container
+}
+</code></pre>
+<p><a href="http://localhost:8000/314.html" target='_blank'>Run Local Demo</a></p>
+
+        </section>
+        <section>
+          <h3 id="drawing-charts">Drawing Charts</h3>
+<p>There is a new graphics library born for the internet every week. Some very good ones are:</p>
+<ol>
+<li>D3.js</li>
+<li>HighCharts</li>
+<li>Raphael</li>
+<li>KineticJS</li>
+</ol>
+
+        </section>
+        <section>
+          <h3 id="visualizing-ontologies-count-occurences">Visualizing Ontologies - Count Occurences</h3>
+<pre><code class="lang-javascript">function getARO(query){
+    var aros = []
+    function extractARO(hit){
+        var pattern = /ARO:\d+/
+        var parts = hit.hit_def.split(/\.\s/)
+        for(var i = 0; i &lt; parts.length; i++){
+            if(pattern.test(parts[i]) &amp;&amp; parts[i] != &quot;ARO:1000001 process or component of antibiotic biology or chemistry&quot;){
+                //Reference variable from parent scope
+                aros.push(parts[i])
+            }
+        }
+    }
+    query.hits.map(extractARO)    
+    return aros
+}
+</code></pre>
+
+        </section>
+        <section>
+          <h3 id="visualize-ontologies-render-plot">Visualize Ontologies - Render Plot</h3>
+<pre><code class="lang-javascript">//Call this into the renderQuery function
+function plotARO(queryObj){
+    var aros = getARO(queryObj)
+    var counts = {}
+    aros.forEach(function(term){ counts[term] = (counts[term]||0) + 1})
+    var plotSeries = []
+    Object.keys(counts).forEach(function(aro){
+        plotSeries.push({name: aro, data: [counts[aro]]})
+    })
+
+    $(&#39;#plot-container&#39;).highcharts({
+        chart: {
+            type: &#39;column&#39;
+        },
+        title: {
+            text: &#39;Antibiotic Resistance Ontology Matches&#39;
+        },
+        subtitle: {
+            text: &#39;Source: http://arpcard.mcmaster.ca/&#39;
+        },
+        yAxis:{
+            title: &quot;Occurences&quot;
+        },
+        xAxis:{
+
+            categories: [&quot;Antibiotic Resistance Ontology&quot;]
+        },
+        series: plotSeries
+        }
+    )
+}
+</code></pre>
+<p><a href="http://localhost:8000/315.html" target='_blank'>Run Local Demo</a></p>
+
+        </section>
+        <section>
+          <h3 id="you-try-it">You Try It</h3>
+<ol>
+<li>Link drug names from the annotations to drug names in &quot;drug_array.json&quot;</li>
+<li>Add a new event handler to an example</li>
+<li>Add a new AJAX request route to the server</li>
+<li>Make Something Up</li>
+</ol>
+
+        </section>
+
+    </div>
+  </div>
+
+  <!-- build:scripts -->
+  <script id="reveal-core" src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.0.0/js/reveal.js" type="text/javascript" charset="utf-8"></script>
+  <script id="reveal-init" type="text/javascript" charset="utf-8">
+    Reveal.initialize({
+      autoSlide: 0,
+      autoSlideStoppable: true,
+      backgroundTransition: 'default',
+      center: true,
+      controls: true,
+      embedded: false,
+      fragments: true,
+      help: true,
+      hideAddressBar: true,
+      history: false,
+      keyboard: true,
+      loop: false,
+      mouseWheel: false,
+      overview: true,
+      parallaxBackgroundImage: '',
+      parallaxBackgroundSize: '',
+      previewLinks: false,
+      progress: true,
+      rtl: false,
+      slideNumber: true,
+      touch: true,
+      transition: 'default',
+      transitionSpeed: 'default',
+      viewDistance: 3
+    });
+  </script>
+  <!-- endbuild -->
+</body>
+</html>

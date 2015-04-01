@@ -1,0 +1,58 @@
+<!DOCTYPE html5>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>    
+    <script src='https://code.jquery.com/jquery-2.1.3.min.js'></script>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<style type="text/css" media="screen">
+
+.radio-label {
+    padding: 15px !important;
+}
+
+</style>
+    <script>
+
+var Genomes = []
+var DataSets = []
+
+$(function(){
+    $.get("/cgi-bin/klebsiella_options.py", function(data){
+        Genomes = data.genome_ids
+        DataSets = data.dataset_ids
+        var genomeSelector = $("#genome-selector")
+        for(var i = 0; i < Genomes.length; i++){
+            var genomeId = Genomes[i]
+            var option = $("<option></option>").val(genomeId).text(genomeId)
+            genomeSelector.append(option)
+        }
+        var dataSetSelector = $("#dataset-selector")
+        for(var i = 0; i < DataSets.length; i++){
+            var dataSetId = DataSets[i];
+            var label = $("<lable class='radio-label'></lable>").text(dataSetId.replace("comprehensive_antibiotic_resistance_database_", "") + " ")
+            var radioBtn = $('<input type="radio" name="dataset_id"/>').val(dataSetId)
+            dataSetSelector.append(label.append(radioBtn))
+        }
+
+    })
+})
+    </script>
+</head>
+<body class='container'>
+    <h2>Klebsiella Pneumonia Genome Annotations</h2>
+    <div>
+        <form>
+            Genome ID: <select id="genome-selector" name="genome_id">
+            </select>
+            <span id='dataset-selector'>
+
+            </span>            
+        </form>
+        <div id='display-results'>
+            
+        </div>
+    </div>
+</body>
+</html>

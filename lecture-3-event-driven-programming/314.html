@@ -1,0 +1,130 @@
+<!DOCTYPE html5>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>    
+    <script src='https://code.jquery.com/jquery-2.1.3.min.js'></script>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+<style type="text/css" media="screen">
+
+.radio-label {
+    padding: 15px !important;
+}
+
+</style>
+    <script>
+
+var Genomes = []
+var DataSets = []
+
+$(function(){
+    $.get("/cgi-bin/klebsiella_options.py", function(data){
+        Genomes = data.genome_ids
+        DataSets = data.dataset_ids
+        var genomeSelector = $("#genome-selector")
+        for(var i = 0; i < Genomes.length; i++){
+            var genomeId = Genomes[i]
+            var option = $("<option></option>").val(genomeId).text(genomeId)
+            genomeSelector.append(option)
+        }
+        var dataSetSelector = $("#dataset-selector")
+        for(var i = 0; i < DataSets.length; i++){
+            var dataSetId = DataSets[i];
+            var label = $("<lable class='radio-label'></lable>").text(dataSetId.replace("comprehensive_antibiotic_resistance_database_", "") + " ")
+            var radioBtn = $('<input type="radio" name="dataset_id"/>').val(dataSetId)
+            dataSetSelector.append(label.append(radioBtn))
+        }
+
+    })
+    $("#load-btn").click(function(evt){
+        evt.preventDefault();
+        loadDataset()
+    })
+    $("#gene-selector").change(function(){
+        renderQuery(currentDataSet[this.value])
+    })
+})
+
+
+var currentDataSet = []
+function loadDataset(){
+    var form = $("#option-form").serialize()
+    console.log(form)
+    $.post("/cgi-bin/klebsiella_data.py", form).success(function(data){
+        currentDataSet = data;
+        if(data.length > 1){
+            renderQuery(data[0])
+            renderQueryList(data)
+        } else {
+            apologize("No data were found meeting these search criterion")
+        }
+    }).error(function(error){apologize("An error occurred while processing your request")})
+}
+
+function apologize(message){
+    var container = $("#query")
+    container.html("<h2>We're sorry...</h2>" + message)
+}
+
+function renderQueryList(queries){
+    var container = $("#gene-selector")
+    container.html("")
+    for(var i = 0; i < queries.length; i++){
+        var queryObj = queries[i]
+        var queryName = queryObj.query_def.replace(/\[.+\]$/, "")
+        var optionTag = $("<option></option>").text(queryName + " - " + queryObj.hits.length)
+            .data('object', queryObj).val(i)
+        container.append(optionTag)
+    }
+}
+
+function renderQuery(queryObj){
+    var container = $("#query")
+    container.html("")
+    container.append($("<h3></h3>").text(queryObj.query_def.replace(/\[.+\]$/, "")))
+    var hitContainer = $("<div></div>")
+    for(var i = 0; i < queryObj.hits.length; i++){
+        var hitRep = renderHit(queryObj.hits[i])
+        hitContainer.append(hitRep)
+    }
+    container.append(hitContainer)
+}
+
+function renderHit(hitObj){
+    var container = $("<div></div>").addClass("hit")
+    var parts = hitObj.hit_def.split(/\s/)
+    var name = parts[0]
+    var description = parts.slice(1).join(" ").replace("ARO:1000001 process or component of antibiotic biology or chemistry. ", "")
+    container.append($("<h5></h5>").text(name))
+    .append($("<b></b>").text("E value: " + hitObj.e_value))
+    .append("<br>")
+    .append($("<b></b>").text("Identity: " + hitObj.hsps[0].identity))    
+    .append($("<div></div>").addClass("hit-description").html(description.split(/\.\s/).join(".<br>")))
+    return container
+}
+
+
+    </script>
+</head>
+<body class='container'>
+    <h2>Klebsiella Pneumonia Genome Annotations</h2>
+    <div>
+        <form id='option-form'>
+            Genome ID: <select id="genome-selector" name="genome_id">
+            </select>
+            <span id='dataset-selector'>
+
+            </span>
+            <button id='load-btn'>Load</button>
+        </form>
+        <select id='gene-selector'>
+        </select>
+        <div id='display-results'>
+            <div id='query'>
+                
+            </div>
+        </div>
+    </div>
+</body>
+</html>
