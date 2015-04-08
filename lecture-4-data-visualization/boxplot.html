@@ -1,0 +1,147 @@
+<!DOCTYPE html5>
+<html>
+<head>
+    <title></title>
+
+<script src="http://code.jquery.com/jquery-2.1.3.js"></script>
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/highcharts-more.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+<script src="simple-statistics-master/simple-statistics-master/src/simple_statistics.js"></script>
+<script>
+
+var plotData =  [
+            [  98.01314411,  622.39665852,  514.24697429,  540.52584772,
+  419.80599665,  508.73217296,  603.24687065,  392.72124235,
+  533.6148209 ,  447.36484904,  756.45454718,  808.83565059,
+  534.34162532,  560.01128267,  577.11859726,  642.0656019 ,
+  449.73482742,  335.76829841,  702.60535648,   73.28957141,
+  306.51309622,  327.24542997,  611.11281565,  712.24577653,
+  316.70764388,  578.15590006,  573.78022644,  396.69178869,
+  589.24077522,  541.15049232,  233.14714281,  541.81394619,
+  505.76610881,  435.50272785,  395.36928084,  487.77158224,
+  732.59646695,  939.32025919,  526.59284206,  380.03220926,
+  646.4170937 ,  488.80073172,  549.50923916,  495.23917866,
+  748.63921981,  499.1693143 ,  989.80567638,  562.49864326,
+  730.39040596,  707.86590793],
+            [ 887.54332875,  862.59579511,  867.13837331,  849.24622748,
+  830.11931882,  869.7888031 ,  949.04423583,  836.22997842,
+  697.73667694,  711.65294421,  749.05106963,  767.11364108,
+  767.95574429,  961.47518172,  645.63457866,  769.21582934,
+  959.61037029,  885.59480002,  704.53132008,  729.38236504,
+  782.26929285,  984.67769126,  775.09478171,  770.69445898,
+  656.31637914,  698.83211973,  987.72143549,  820.6116123 ,
+  774.65915262,  850.54049592,  504.93160063,  658.37762582,
+  669.58815436,  891.15092878,  776.53967823,  775.96436978,
+  510.1584221 ,  778.42303082,  951.61743126,  820.21127578,
+  793.16503322,  973.40407199,  939.77702282,  965.12847514,
+  794.2855166 ,  848.11836955,  712.03856884,  652.14530583,
+  834.69670363,  850.94973146]
+        ]
+
+ss.mixin()
+
+var boxplotData = [
+    [plotData[0].min(), ss.quantile(plotData[0], 0.25), plotData[0].median(), ss.quantile(plotData[0], 0.75), plotData[0].max()],
+    [plotData[1].min(), ss.quantile(plotData[1], 0.25), plotData[1].median(), ss.quantile(plotData[1], 0.75), plotData[1].max()]
+]
+
+var scatterData = []
+var categories = ["AA", "AG"]
+
+for (var i = 0; i < plotData.length; i++){
+    var seriesData = plotData[i];
+    for(var pIter = 0; pIter < seriesData.length; pIter++){
+        var y = seriesData[pIter]
+        var x = i + Math.random() * 0.50 - 0.25
+        scatterData.push({x: x, y: y, genotype: categories[i]})
+    }
+}
+
+
+$(function(){
+    $("#plot-container").highcharts({
+
+        chart: {
+            type: 'boxplot'
+        },
+
+        title: {
+            text: 'Mean Fluorensence Index by Genotype'
+        },
+
+        legend: {
+            enabled: true
+        },
+
+        xAxis: {
+            categories: ['AA', 'AG', /*'GT', 'AC', 'GC'*/],
+            title: {
+                text: 'Genotype'
+            }
+        },
+
+        yAxis: {
+            title: {
+                text: 'Observations'
+            },
+            plotLines: [{
+                value: 932,
+                color: 'red',
+                width: 1,
+                label: {
+                    text: 'Theoretical mean: 932',
+                    align: 'center',
+                    style: {
+                        color: 'gray'
+                    }
+                }
+            }]
+        },
+
+        series: [{
+            name: 'Mean Fluorensence Index',
+            data: boxplotData,
+            tooltip: {
+                headerFormat: '<em>Genotype {point.key}</em><br/>'
+            }
+        },
+        {
+            name: 'Outlier',
+            color: Highcharts.getOptions().colors[0],
+            type: 'scatter',
+            data: scatterData,
+            showInLegend: false,
+            marker: {
+                fillColor: 'navy',
+                lineWidth: 1,
+                lineColor: Highcharts.getOptions().colors[0],
+                symbol: "square"
+            },
+            events:{
+                click: function(event){
+                    console.log(event.point)
+                }
+            },                
+            tooltip: {
+                pointFormat: 'Observation: {point.y},{point.genotype}'
+/*                pointFormatter: function(){
+                    console.log(this);
+                    return 'Observation: {point.y},{point.genotype}'
+                }
+*/            }
+        }
+        ]
+
+    });
+})
+
+</script>
+</head>
+<body>
+
+<div id='plot-container'>
+    
+</div>
+</body>
+</html>
