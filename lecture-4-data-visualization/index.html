@@ -1,0 +1,44 @@
+<!DOCTYPE html5>
+<html>
+<head>
+<title>More Data Visualization</title>
+<script src='https://code.jquery.com/jquery-2.1.3.min.js'></script>
+<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/languages/javascript.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/languages/html.min.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/monokai_sublime.min.css">
+<link rel="stylesheet" type="text/css" href="https://bootswatch.com/simplex/bootstrap.min.css">
+<script>
+        hljs.initHighlightingOnLoad();
+        hljs.configure({useBR: false})
+    $(function(){
+        $.get("boxplot.html").done(function(data){
+            $("#raw-code pre code").text(data)
+            $('pre code').each(function(i, block) {
+                hljs.highlightBlock(block);
+            });
+        })
+    })
+</script>
+</head>
+<body class='container'>
+<h2>Data Visualization</h2>
+<div>
+Data visualization toolkits come in many varieties. Some are specialized to a particular information domain, while others are general and configurable.
+
+Today, instead of slides, we interactively built a box-plot for a database project team
+    </div>
+<iframe width="100%" height="50%" src="boxplot.html">
+</iframe>
+<div id="raw-code">
+    <pre>
+    <code class="lang-html">
+        
+    </code>
+    </pre>    
+</div>
+
+
+</body>
+</html>

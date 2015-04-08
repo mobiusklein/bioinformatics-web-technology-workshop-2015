@@ -1,0 +1,29 @@
+<meta charset="UTF-8">
+<link type="text/css" rel="stylesheet" href="https://cdn.rawgit.com/jmvillaveces/biojs-vis-keggviewer/master/css/jquery-ui.css">
+
+
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.11.2/jquery-ui.min.js"></script>
+<script src="node_modules/biojs-vis-keggviewer/build/biojsviskeggviewer.js"></script>
+
+
+<div id='snippetDiv'></div>
+<script>
+var rootDiv = document.getElementById('snippetDiv');
+
+var biojsviskegg = require("biojs-vis-keggviewer");
+
+var expression = {
+    upColor:'red',
+    downColor:'blue',
+    genes: ["hsa:22845", "hsa:1798", "hsa:29880", "hsa:79868", "hsa:199857", "hsa:8813", "hsa:8818", "hsa:54344", "hsa:56052", "hsa:85365", "hsa:440138", "hsa:10195", "hsa:79796", "hsa:79087", "hsa:29929", "hsa:79053", "hsa:84920", "hsa:144245", "hsa:3703", "hsa:201595", "hsa:6184", "hsa:6185", "hsa:1603", "hsa:7991", "hsa:1650", "hsa:57171", "hsa:7841", "hsa:23193", "hsa:11253", "hsa:10905", "hsa:57134", "hsa:4121", "hsa:4245", "hsa:4124", "hsa:4122", "hsa:4247", "hsa:2530", "hsa:2683", "hsa:8704", "hsa:8703", "hsa:6480", "hsa:84620", "hsa:4248", "hsa:11320", "hsa:11282", "hsa:152586", "hsa:4249", "hsa:146664", "hsa:25834"],
+    conditions: []
+};
+        
+// Use heroku proxy
+var proxy = function(url){
+    return 'https://cors-anywhere.herokuapp.com/'+url;
+};
+        
+biojsviskegg.pathway('hsa00510').proxy(proxy).expression(expression).target(rootDiv).init();
+</script>
