@@ -8,14 +8,13 @@
 var app = angular.module("spectra", [])
 var demoController = app.controller("demoController", function($scope, $http){
     $scope.precursor = {}
-    $scope.img_path = "tandem_spectra.svg"
     $scope.fetchData = function(id){
         id = id === undefined ? "" : id;
-        $http.get("/cgi-bin/api.py?spectra_id=" + id).success(function(response){
+        $http.get("/cgi-bin/api.png_uri_encode_image.py?spectra_id=" + id).success(function(response){
             console.log(response)
             $scope.precursor = response.precursor
             $scope.observed_precursor_count = response.observed_precursor_count
-            $scope.img_path = response.img_path + "?" + Math.random();
+            $scope.img_path = response.img_path
         }).error(function(err){
             console.log(err)
         })
@@ -68,8 +67,7 @@ var demoController = app.controller("demoController", function($scope, $http){
 </div>
 <div style='float: left;margin-left:15px;'>
 <h3>Tandem Spectra Graph</h3>
-<object data="{{img_path}}" type="image/svg+xml">
-</object>
+<img src="{{img_path}}"/>
 </div>
 </body>
 </html>

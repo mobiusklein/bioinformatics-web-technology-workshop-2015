@@ -1,0 +1,48 @@
+<!DOCTYPE html5>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.3.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script>
+
+function fetchData(id){
+    id = id === undefined ? "" : id
+    $.get("cgi-bin/jinja2_template.py?spectra_id=" + id).success(function(data){
+            $("#data-table").html(data)
+    })   
+}
+
+$(function(){
+    fetchData()
+    $("#get-spectra-btn").click(function(evt){
+        fetchData($("#spectra-input").val())
+    })
+})
+    </script>
+</head>
+<body style="margin:20px;">
+<h1>Bootstrap Tabs on The Spectra Database</h1>
+<div>
+    <input id='spectra-input' type="number" name="spectra_id" value="866" placeholder="Spectra ID Here">
+    <button class="btn btn-primary" id='get-spectra-btn'>Fetch Spectra</button>
+</div>
+<br>
+<div id="content">
+<ul class="nav nav-tabs" role="tablist">
+    <li class="active"><a data-toggle="tab" href="#data-table">Data Table</a></li>
+    <li><a data-toggle="tab" href="#help-menu">Help Menu</a></li>
+</ul>
+
+<div class="tab-content">    
+    <div class="tab-pane active" id='data-table'>
+        Please wait...
+    </div>
+    <div class="tab-pane" id='help-menu'>
+        This is how you use this web page...
+    </div>
+</div>
+</div>
+</body>
+</html>
