@@ -1,0 +1,33 @@
+
+* {
+    font-family: Helvetica;
+}
+
+body {
+    margin-left: 20px;
+}
+
+table td {
+    padding: 4px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+#precursor-stats td {
+    border: 1px solid black;
+}
+
+#tandem-table th {
+    border-bottom: 1px solid black;
+}
+
+h2, h3 {
+    text-align: center;
+}
+
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}

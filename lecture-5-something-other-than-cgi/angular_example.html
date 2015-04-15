@@ -1,0 +1,76 @@
+<!DOCTYPE html5>
+<html ng-app="spectra">
+<head>
+    <title>Yet Another Databases Example</title>
+    <link rel="stylesheet" type="text/css" href="/assets/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.js"></script>
+    <script type="text/javascript">
+var app = angular.module("spectra", [])
+var demoController = app.controller("demoController", function($scope, $http){
+    $scope.precursor = {}
+
+    $scope.fetchData = function(id){
+        id = id === undefined ? "" : id;
+        $http.get("/cgi-bin/api.py?spectra_id=" + id).success(function(response){
+            console.log(response)
+            $scope.precursor = response.precursor
+            $scope.observed_precursor_count = response.observed_precursor_count
+            $scope.img_path = response.img_path
+        }).error(function(err){
+            console.log(err)
+        })
+    }
+
+    $scope.fetchData()
+    window.controller = $scope
+})
+
+    </script>
+</head>
+<body ng-controller='demoController'>
+<h2>Observed Spectrum Database</h2>
+<div style='float: left;'>
+<p>
+    There are {{observed_precursor_count}} precursor spectra in this database.
+</p>
+<div>
+    <b>Current selected precursor spectrum:</b> {{precursor.id}}
+    <table id='precursor-stats'>
+        <tr>
+            <td>Neutral Mass</td>
+            <td>{{precursor.neutral_mass}}</td>
+        </tr>            
+        <tr>
+            <td>Charge</td>
+            <td>{{precursor.charge}}</td>
+        </tr>
+        <tr>
+            <td>Number of scans</td>
+            <td>{{precursor.scans.length}}</td>
+        </tr>
+        <tr>
+            <td>Number of tandem spectra</td>
+            <td>{{precursor.tandem_data.length}}</td>
+        </tr>
+    </table>
+</div>
+<h4>Tandem Spectra</h4>
+<table id='tandem-table'>
+<tr><th>Neutral Mass</th><th>Intensity</th><th>Charge</th></tr>
+
+<tr ng-repeat="ion in precursor.tandem_data">
+    <td>{{ion.neutral_mass}}</td>
+    <td>{{ion.intensity}}</td>
+    <td>{{ion.charge}}</td>
+</tr>
+
+</table> 
+</div>
+<div style='float: left;margin-left:15px;'>
+<h3>Tandem Spectra Graph</h3>
+<object data="{{img_path}}" type="image/svg+xml">
+</object>
+</div>
+</body>
+</html>
+

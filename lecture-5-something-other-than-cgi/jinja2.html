@@ -1,0 +1,52 @@
+<!DOCTYPE html5>
+<html>
+<head>
+    <title>Yet Another Databases Example</title>
+    <link rel="stylesheet" type="text/css" href="/assets/style.css">
+</head>
+<body>
+<h2>Observed Spectrum Database</h2>
+<div style='float: left;'>
+<p>
+    There are {{observed_precursor_count}} precursor spectra in this database.
+</p>
+<div>
+    <b>Current selected precursor spectrum:</b> {{precursor.id}}
+    <table id='precursor-stats'>
+        <tr>
+            <td>Neutral Mass</td>
+            <td>{{precursor.neutral_mass}}</td>
+        </tr>            
+        <tr>
+            <td>Charge</td>
+            <td>{{precursor.charge}}</td>
+        </tr>
+        <tr>
+            <td>Number of scans</td>
+            <td>{{precursor.scans|length}}</td>
+        </tr>
+        <tr>
+            <td>Number of tandem spectra</td>
+            <td>{{precursor.tandem_data|length}}</td>
+        </tr>
+    </table>
+</div>
+<h4>Tandem Spectra</h4>
+<table id='tandem-table'>
+<tr><th>Neutral Mass</th><th>Intensity</th><th>Charge</th></tr>
+    {% for ion in precursor.tandem_data %}
+        <tr>
+            <td>{{ion.neutral_mass}}</td>
+            <td>{{ion.intensity}}</td>
+            <td>{{ion.charge}}</td>
+        </tr>
+    {% endfor %}
+</table> 
+</div>
+<div style='float: left;margin-left:15px;'>
+<h3>Tandem Spectra Graph</h3>
+<object data="../{{img_path}}" type="image/svg+xml">
+</object>
+</div>
+</body>
+</html>
